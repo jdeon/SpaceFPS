@@ -36,4 +36,5 @@ sysinfo.txt
 *.unitypackage
 
 # Perso
+# sharedasset contient toute les asset compiler lors d'un build
 *.assets
