@@ -1,0 +1,163 @@
+fileFormatVersion: 2
+guid: 308bd44b326fd9448bf885a554c15997
+timeCreated: 1515627793
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Cylinder
+    100002: Cylinder_001
+    100004: Propulseur
+    100006: Propulseur_001
+    100008: Propulseur_002
+    100010: Propulseur_003
+    100012: Propulseur_004
+    100014: Propulseur_005
+    100016: Propulseur_006
+    100018: Propulseur_007
+    100020: Propulseur_008
+    100022: Propulseur_009
+    100024: Propulseur_010
+    100026: Sphere
+    100028: //RootNode
+    400000: Cylinder
+    400002: Cylinder_001
+    400004: Propulseur
+    400006: Propulseur_001
+    400008: Propulseur_002
+    400010: Propulseur_003
+    400012: Propulseur_004
+    400014: Propulseur_005
+    400016: Propulseur_006
+    400018: Propulseur_007
+    400020: Propulseur_008
+    400022: Propulseur_009
+    400024: Propulseur_010
+    400026: Sphere
+    400028: //RootNode
+    2300000: Cylinder
+    2300002: Cylinder_001
+    2300004: Propulseur
+    2300006: Propulseur_001
+    2300008: Propulseur_002
+    2300010: Propulseur_003
+    2300012: Propulseur_004
+    2300014: Propulseur_005
+    2300016: Propulseur_006
+    2300018: Propulseur_007
+    2300020: Propulseur_008
+    2300022: Propulseur_009
+    2300024: Propulseur_010
+    2300026: Sphere
+    3300000: Cylinder
+    3300002: Cylinder_001
+    3300004: Propulseur
+    3300006: Propulseur_001
+    3300008: Propulseur_002
+    3300010: Propulseur_003
+    3300012: Propulseur_004
+    3300014: Propulseur_005
+    3300016: Propulseur_006
+    3300018: Propulseur_007
+    3300020: Propulseur_008
+    3300022: Propulseur_009
+    3300024: Propulseur_010
+    3300026: Sphere
+    4300000: Propulseur_010
+    4300002: Propulseur_009
+    4300004: Propulseur_008
+    4300006: Propulseur_007
+    4300008: Propulseur_006
+    4300010: Propulseur_005
+    4300012: Propulseur_004
+    4300014: Propulseur_003
+    4300016: Propulseur_002
+    4300018: Propulseur_001
+    4300020: Cylinder
+    4300022: Cylinder_001
+    4300024: Sphere
+    4300026: Propulseur
+    6400000: Cylinder
+    6400002: Cylinder_001
+    6400004: Propulseur
+    6400006: Propulseur_001
+    6400008: Propulseur_002
+    6400010: Propulseur_003
+    6400012: Propulseur_004
+    6400014: Propulseur_005
+    6400016: Propulseur_006
+    6400018: Propulseur_007
+    6400020: Propulseur_008
+    6400022: Propulseur_009
+    6400024: Propulseur_010
+    6400026: Sphere
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

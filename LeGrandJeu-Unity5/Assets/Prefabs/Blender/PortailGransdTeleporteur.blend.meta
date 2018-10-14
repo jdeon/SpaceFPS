@@ -1,0 +1,175 @@
+fileFormatVersion: 2
+guid: 5e139d4d765bdab44a758981ff77c02c
+timeCreated: 1519759465
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Arche
+    100002: Arche_001
+    100004: Arche_002
+    100006: Arche_003
+    100008: Arche_004
+    100010: Arche_005
+    100012: Arche_006
+    100014: Contour
+    100016: PoleTeleporteur
+    100018: PoleTeleporteur_001
+    100020: PoleTeleporteur_002
+    100022: PoleTeleporteur_003
+    100024: PoleTeleporteur_004
+    100026: PoleTeleporteur_005
+    100028: PoleTeleporteur_006
+    100030: //RootNode
+    100032: Socle
+    400000: Arche
+    400002: Arche_001
+    400004: Arche_002
+    400006: Arche_003
+    400008: Arche_004
+    400010: Arche_005
+    400012: Arche_006
+    400014: Contour
+    400016: PoleTeleporteur
+    400018: PoleTeleporteur_001
+    400020: PoleTeleporteur_002
+    400022: PoleTeleporteur_003
+    400024: PoleTeleporteur_004
+    400026: PoleTeleporteur_005
+    400028: PoleTeleporteur_006
+    400030: //RootNode
+    400032: Socle
+    2300000: Arche
+    2300002: Arche_001
+    2300004: Arche_002
+    2300006: Arche_003
+    2300008: Arche_004
+    2300010: Arche_005
+    2300012: Arche_006
+    2300014: Contour
+    2300016: PoleTeleporteur
+    2300018: PoleTeleporteur_001
+    2300020: PoleTeleporteur_002
+    2300022: PoleTeleporteur_003
+    2300024: PoleTeleporteur_004
+    2300026: PoleTeleporteur_005
+    2300028: PoleTeleporteur_006
+    2300030: Socle
+    3300000: Arche
+    3300002: Arche_001
+    3300004: Arche_002
+    3300006: Arche_003
+    3300008: Arche_004
+    3300010: Arche_005
+    3300012: Arche_006
+    3300014: Contour
+    3300016: PoleTeleporteur
+    3300018: PoleTeleporteur_001
+    3300020: PoleTeleporteur_002
+    3300022: PoleTeleporteur_003
+    3300024: PoleTeleporteur_004
+    3300026: PoleTeleporteur_005
+    3300028: PoleTeleporteur_006
+    3300030: Socle
+    4300000: Arche
+    4300002: PoleTeleporteur
+    4300004: Contour
+    4300006: Arche_001
+    4300008: PoleTeleporteur_001
+    4300010: Arche_002
+    4300012: PoleTeleporteur_002
+    4300014: Arche_003
+    4300016: PoleTeleporteur_003
+    4300018: Arche_004
+    4300020: PoleTeleporteur_004
+    4300022: Arche_005
+    4300024: PoleTeleporteur_005
+    4300026: Arche_006
+    4300028: PoleTeleporteur_006
+    4300030: Socle
+    6400000: Arche
+    6400002: Arche_001
+    6400004: Arche_002
+    6400006: Arche_003
+    6400008: Arche_004
+    6400010: Arche_005
+    6400012: Arche_006
+    6400014: Contour
+    6400016: PoleTeleporteur
+    6400018: PoleTeleporteur_001
+    6400020: PoleTeleporteur_002
+    6400022: PoleTeleporteur_003
+    6400024: PoleTeleporteur_004
+    6400026: PoleTeleporteur_005
+    6400028: PoleTeleporteur_006
+    6400030: Socle
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

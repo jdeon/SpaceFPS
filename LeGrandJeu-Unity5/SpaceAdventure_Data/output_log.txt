@@ -1,0 +1,53 @@
+Initialize engine version: 4.6.3f1 (4753d8b6ef2b)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: Intel(R) HD Graphics 4600 (ID=0x416)
+    Vendor:   Intel
+    VRAM:     896 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+- Completed reload, in  0.042 seconds
+desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+Platform assembly: C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Jeanne\Documents\MonPremierEnvironnement3D\SpaceAdventure_Data\Managed\System.dll (this message is harmless)
+UnloadTime: 3.275399 ms
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 4 unused Assets to reduce memory usage. Loaded Objects now: 277.
+Total: 0.492656 ms (FindLiveObjects: 0.015395 ms CreateObjectMapping: 0.007697 ms MarkObjects: 0.100498 ms  DeleteObjects: 0.007270 ms)
+
+UnloadTime: 0.546541 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 4 unused Assets to reduce memory usage. Loaded Objects now: 982.
+Total: 0.638486 ms (FindLiveObjects: 0.034212 ms CreateObjectMapping: 0.011546 ms MarkObjects: 0.147112 ms  DeleteObjects: 0.021382 ms)
+
+Level '' (-1) couldn't be loaded because it has not been added to the build settings.
+To add a level to the build settings use the menu File->Build Settings...
+ 
+(Filename:  Line: 276)
+
+UnloadTime: 1.652453 ms
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 6999.
+Total: 1.023802 ms (FindLiveObjects: 0.187739 ms CreateObjectMapping: 0.038916 ms MarkObjects: 0.419528 ms  DeleteObjects: 0.020955 ms)
+
+UnloadTime: 8.879800 ms
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 549 unused Assets to reduce memory usage. Loaded Objects now: 10495.
+Total: 1.984740 ms (FindLiveObjects: 0.361367 ms CreateObjectMapping: 0.061154 ms MarkObjects: 0.618814 ms  DeleteObjects: 0.569634 ms)
+

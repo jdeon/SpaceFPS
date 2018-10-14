@@ -1,0 +1,10 @@
+Nouvelle epreuve a rajouter : 
+-Parcours labyrinth avec des levier pour changer le sens de la gravité (par exemple dans un vaisseau).
+-Un parcours de bumper sans platform
+-Controle d un petit vehicule (boule) a travers labyrinth et petite faille non accessible par controller
+-Mise en place de terrain
+
+
+Nouveau niveau entre 1 et 2 a l'interieur d'un vaisseau
+
+Scripter une attaque horizonatal et vertical de la masse panda. L'attaque horizontal pourrait expulser le coffre au loin et vertical détruirait la plateforme (donc fin du niveau)

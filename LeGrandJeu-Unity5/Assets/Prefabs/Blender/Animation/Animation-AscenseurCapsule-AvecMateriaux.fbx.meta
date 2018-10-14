@@ -1,0 +1,132 @@
+fileFormatVersion: 2
+guid: e1795240b3cd6b34aa5d6d03f00b4f5e
+timeCreated: 1526987194
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Cabine
+    100004: Camera
+    100006: Lamp
+    100008: Marche
+    100010: PorteDroite
+    100012: PorteGauche
+    100014: Sol
+    100016: Toit
+    400000: //RootNode
+    400002: Cabine
+    400004: Camera
+    400006: Lamp
+    400008: Marche
+    400010: PorteDroite
+    400012: PorteGauche
+    400014: Sol
+    400016: Toit
+    2300000: Cabine
+    2300002: Marche
+    2300004: PorteDroite
+    2300006: PorteGauche
+    2300008: Sol
+    2300010: Toit
+    3300000: Cabine
+    3300002: Marche
+    3300004: PorteDroite
+    3300006: PorteGauche
+    3300008: Sol
+    3300010: Toit
+    4300000: Marche
+    4300002: PorteGauche
+    4300004: PorteDroite
+    4300006: Sol
+    4300008: Toit
+    4300010: Cabine
+    7400000: Marche|FemeturePortes
+    7400002: Marche|MarcheAction
+    7400004: Marche|OuverurePortes
+    7400006: Marche|PorteDroiteAction
+    7400008: Marche|PorteGaucheAction
+    7400010: PorteGauche|FemeturePortes
+    7400012: PorteGauche|MarcheAction
+    7400014: PorteGauche|OuverurePortes
+    7400016: PorteGauche|PorteDroiteAction
+    7400018: PorteGauche|PorteGaucheAction
+    7400020: PorteDroite|FemeturePortes
+    7400022: PorteDroite|MarcheAction
+    7400024: PorteDroite|OuverurePortes
+    7400026: PorteDroite|PorteDroiteAction
+    7400028: PorteDroite|PorteGaucheAction
+    7400030: Sol|FemeturePortes
+    7400032: Sol|MarcheAction
+    7400034: Sol|OuverurePortes
+    7400036: Sol|PorteDroiteAction
+    7400038: Sol|PorteGaucheAction
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

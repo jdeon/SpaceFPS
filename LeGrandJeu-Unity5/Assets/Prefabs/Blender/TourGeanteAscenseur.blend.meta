@@ -1,0 +1,113 @@
+fileFormatVersion: 2
+guid: f7d281698f17223488971130c1ddc5e1
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ComplemenTour
+    100002: Entree
+    100004: PorteDroite
+    100006: PorteGauche
+    100008: Tour
+    100010: //RootNode
+    100012: TubeAscenseur
+    400000: ComplemenTour
+    400002: Entree
+    400004: PorteDroite
+    400006: PorteGauche
+    400008: Tour
+    400010: //RootNode
+    400012: TubeAscenseur
+    2300000: ComplemenTour
+    2300002: Entree
+    2300004: PorteDroite
+    2300006: PorteGauche
+    2300008: Tour
+    2300010: TubeAscenseur
+    3300000: ComplemenTour
+    3300002: Entree
+    3300004: PorteDroite
+    3300006: PorteGauche
+    3300008: Tour
+    3300010: TubeAscenseur
+    4300000: PorteDroite
+    4300002: PorteGauche
+    4300004: ComplemenTour
+    4300006: Entree
+    4300008: TubeAscenseur
+    4300010: Tour
+    6400000: ComplemenTour
+    6400002: Entree
+    6400004: PorteDroite
+    6400006: PorteGauche
+    6400008: Tour
+    6400010: TubeAscenseur
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
