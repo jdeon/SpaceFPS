@@ -22,7 +22,7 @@ public class ToucheChargementNiveau : MonoBehaviour {
 		int nivActuel = ConnexionPseudo.getNivActuel();
 		for (int index = 0; index < nivActuel; index++) {
 			if (index < listButton.Count) {
-				listButton [index].transform.FindChild ("ImageActif").gameObject.SetActive (true);
+				listButton [index].transform.Find ("ImageActif").gameObject.SetActive (true);
 			}
 		}
 	}

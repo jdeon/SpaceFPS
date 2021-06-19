@@ -699,10 +699,10 @@ public class iTween : MonoBehaviour{
 		}
 		
 		//set tempColor and base fromColor:
-		if(target.GetComponent<GUITexture>()){
-			tempColor=fromColor=target.GetComponent<GUITexture>().color;	
-		}else if(target.GetComponent<GUIText>()){
-			tempColor=fromColor=target.GetComponent<GUIText>().material.color;
+		if(target.GetComponent<UI.Image>()){
+			tempColor=fromColor=target.GetComponent<UI.Image>().color;	
+		}else if(target.GetComponent<UI.Text>()){
+			tempColor=fromColor=target.GetComponent<UI.Text>().material.color;
 		}else if(target.GetComponent<Renderer>()){
 			tempColor=fromColor=target.GetComponent<Renderer>().material.color;
 		}else if(target.GetComponent<Light>()){

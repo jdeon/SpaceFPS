@@ -8,7 +8,8 @@ public class RotateSamplePingPong : MonoBehaviour
 	public float AngleEnFraction;
 
 	void Start(){
-		iTween.RotateBy(gameObject, iTween.Hash("x", AngleEnFraction, "easeType", "easeInOutBack", "loopType", "pingPong", "delay", Delay, "time", time));
+		//FIXME
+		//iTween.RotateBy(gameObject, iTween.Hash("x", AngleEnFraction, "easeType", "easeInOutBack", "loopType", "pingPong", "delay", Delay, "time", time));
 	}
 }
 

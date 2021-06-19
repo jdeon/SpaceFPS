@@ -75,6 +75,12 @@ public class GestionCheckpoint : MonoBehaviour {
 		List<Transform> listCheckpointALancer = new List<Transform>();
 		int actualCheckPoint = -1;
 		string etapeActuel = PlayerPrefs.GetString (PlayerPrefs.GetString(Constantes.PP_JOUEUR_COURANT)); //format : lvl_???_checkP_???
+
+        if (string.IsNullOrEmpty(etapeActuel))
+        {
+			return;
+        }
+		
 		string[] tabInfoEtape = etapeActuel.Split ('_');
 		numNiveau = 0;
 		int.TryParse(tabInfoEtape[1], out numNiveau);

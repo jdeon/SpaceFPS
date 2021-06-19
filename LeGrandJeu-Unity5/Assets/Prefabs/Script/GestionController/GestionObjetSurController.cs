@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GestionObjetSurController : MonoBehaviour {
@@ -53,9 +54,9 @@ public class GestionObjetSurController : MonoBehaviour {
             this.positionObjetDeBase = new Vector3 (objetTransform.position.x, objetTransform.position.y, objetTransform.position.z);
 
 			if (!(controllerTransform.Find (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_DROITE) == null) && controllerTransform.Find (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_DROITE).childCount == 0) {
-                destinationObjetTransform = controllerTransform.FindChild (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_DROITE);
+                destinationObjetTransform = controllerTransform.Find (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_DROITE);
 			} else if (!(controllerTransform.Find (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_GAUCHE) == null) && controllerTransform.Find (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_GAUCHE).childCount == 0) {
-                destinationObjetTransform = controllerTransform.FindChild (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_GAUCHE);
+                destinationObjetTransform = controllerTransform.Find (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_GAUCHE);
 			}
 
 			StartCoroutine (saisirObjet(destinationObjetTransform,objetTransform));
@@ -190,9 +191,9 @@ public class GestionObjetSurController : MonoBehaviour {
 	/**Affiche le message en parametre durant le temps en parametre
 	 * */
 	IEnumerator ShowMessage (string message, float delay) {
-		GetComponent<GUIText>().text = message;
-		GetComponent<GUIText>().enabled = true;
+		GetComponent<Text>().text = message;
+		GetComponent<Text>().enabled = true;
 		yield return new WaitForSeconds(delay);
-		GetComponent<GUIText>().enabled = false;
+		GetComponent<Text>().enabled = false;
 	}	
 }
