@@ -10,16 +10,19 @@ public class MoveScript : MonoBehaviour {
 	private Rigidbody _rigidbody;
 
 	[SerializeField]
-	private float _moveForce;
+	private float _accelerationForce;
 
 	[SerializeField]
-	private float _geometricDrag;
-
-	[SerializeField]
-	private float _linearDrag;
+	private float _decelerationForce;
 
 	[SerializeField]
 	private float _maxVelocity;
+
+	[SerializeField]
+	private float stepOff; //  distance a sur laquelle peut monter le controller
+
+	[SerializeField]
+	private float _stepSmooth;
 
 	[SerializeField]
 	private AudioClip[] _feetSounds;
@@ -31,8 +34,11 @@ public class MoveScript : MonoBehaviour {
 	//distance entre chaque bruit de pas
 	private float timeBeforeNewClip;
 	private float mouvementDemander;	//Temps entre le relachment de la touche et la fin des bruit de pas
-	private float stepOff; //  distance a sur laquelle peut monter le controller
-	private Collider previousStep;
+	private JumpScript _jumpScript;
+
+	public bool isStepClimbing { get; private set; }
+	private GameObject stepRayLower;
+	private GameObject stepRayUpper;
 
 	void Start () {
 		if (_rigidbody == null) {
@@ -41,80 +47,101 @@ public class MoveScript : MonoBehaviour {
 		_audioSource = GetComponent<AudioSource> ();
 		timeBeforeNewClip = 2f;
 		mouvementDemander = 2.5f;
-		stepOff = .5f;
-		previousStep = null;
+
+		_jumpScript = GetComponent<JumpScript>();
+
+		CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
+
+
+		isStepClimbing = false;
+		stepRayLower = new GameObject("stepRayLower");
+		stepRayLower.transform.SetParent(_transform);
+		stepRayLower.transform.localPosition = new Vector3(0, 0.1f, capsuleCollider.radius * 0.9f);
+
+		stepRayUpper = new GameObject("stepRayUpper");
+		stepRayUpper.transform.SetParent(_transform);
+		stepRayUpper.transform.localPosition = new Vector3(0, stepOff, capsuleCollider.radius * 0.9f);
 	}
 	
 	void FixedUpdate () {
-		if (timeBeforeNewClip < 0) {
-			PlayFootStepAudio (_rigidbody.velocity.magnitude);
-			timeBeforeNewClip = 2f;
-		}
-			
-		bool isTropPentu = false;
+		
 		var direction = (_transform.forward * Input.GetAxis("Vertical") + _transform.right * Input.GetAxis("Horizontal")).normalized;
 		direction = direction.normalized;
 
-		if (Input.GetAxis ("Vertical") != 0 || Input.GetAxis ("Horizontal") != 0) {
-			mouvementDemander = 2.5f;
-		} else {
-			mouvementDemander -= Time.deltaTime;
-		}
-			
 		//Pente max egal a 30°
-		if (direction != Vector3.zero && Physics.SphereCast (_transform.position + _transform.up * 1f, .001f, direction, out _hit, Mathf.Sqrt (3f))) {
-			if (_hit.normal.y > .1f) {
-				isTropPentu = true;
+		bool isTropPentu = isPenteSup30(direction);
+
+		applyMovements(direction, isTropPentu);
+
+		stepClimbing(direction);
+   	}
+
+	private bool isPenteSup30(Vector3 direction)
+    {
+		bool result = false;
+		if (direction != Vector3.zero && Physics.SphereCast(_transform.position + _transform.up * 1f, .001f, direction, out _hit, Mathf.Sqrt(3f)))
+		{
+			if (_hit.normal.y > .1f)
+			{
+				result = true;
 			}
 		}
 
-		var speeddelta =  (direction *_moveForce);
+		return result;
+	}
+
+	//TODO gestion différente en l'air ?
+	private void applyMovements(Vector3 direction, bool isTropPentu)
+    {
 		var rigidVelocity = new Vector3(_rigidbody.velocity.x, _rigidbody.velocity.y, _rigidbody.velocity.z);
-		var speed = rigidVelocity - Vector3.Scale(_transform.up , rigidVelocity);
+		var speed = rigidVelocity - Vector3.Scale(_transform.up, rigidVelocity);
 
-		_rigidbody.AddForce((speed - speed.normalized * _linearDrag) * _geometricDrag - speed, ForceMode.VelocityChange);
-
-		speed -= speed.normalized * _linearDrag;
-		speed *= _geometricDrag;
-	
-		if (speed.magnitude > _maxVelocity || isTropPentu)
+		if (_jumpScript.isInGround() &&(Vector3.zero == direction || isTropPentu))
 		{
-			_rigidbody.AddForce(Vector3.ClampMagnitude((speed + speeddelta * Time.deltaTime), speed.magnitude) - speed, ForceMode.VelocityChange);
+			if (speed.magnitude < _maxVelocity / 10)
+			{
+				//Arret personnage
+				_rigidbody.velocity = rigidVelocity - speed;
+			}
+			else
+			{
+				//Deceleration
+				var speeddelta = (-speed.normalized * _decelerationForce);
+				_rigidbody.AddForce(speeddelta, ForceMode.Acceleration);
+			}
+		}
+		else if (speed.magnitude < _maxVelocity)
+		{
+			var speeddelta = (direction * _accelerationForce);
+			_rigidbody.AddForce(speeddelta, ForceMode.Acceleration);
+
+		}
+	}
+
+	private void generateFootSound(Vector3 direction)
+    {
+		if (timeBeforeNewClip < 0)
+		{
+			playFootStepAudio(_rigidbody.velocity.magnitude);
+			timeBeforeNewClip = 2f;
+		}
+
+		if (Vector3.zero != direction)
+		{
+			mouvementDemander = 2.5f;
 		}
 		else
 		{
-			_rigidbody.AddForce(Vector3.ClampMagnitude((speed + speeddelta * Time.deltaTime), _maxVelocity) - speed, ForceMode.VelocityChange);
+			mouvementDemander -= Time.deltaTime;
 		}
 
-		if (mouvementDemander > 0) {
+		if (mouvementDemander > 0)
+		{
 			timeBeforeNewClip -= _rigidbody.velocity.magnitude * Time.deltaTime;
 		}
-			
-			
-
-			//On vérifie si c'est une marche
-		if (Input.GetAxis ("Jump") == 0 && direction != Vector3.zero && !Physics.Raycast (_transform.position + _transform.up * stepOff, direction, 1f)) {
-			RaycastHit _hit2;
-			if (Physics.BoxCast (_transform.position + _transform.up * stepOff + direction * .5f, new Vector3 (.2f, .05f, .5f), _transform.up * -1, out _hit2, _transform.rotation, stepOff - .1f) && !_hit2.collider.isTrigger && previousStep != _hit2.collider) {
- 				previousStep = _hit2.collider;
-				float tailleDeMarche = stepOff - _hit2.distance;
-				if (tailleDeMarche > 0) {
-					float vitesseVertical = Mathf.Sqrt (Mathf.Abs(2 * tailleDeMarche * Physics.gravity.y));
-					if (_rigidbody.velocity.y < vitesseVertical) {
-						_rigidbody.AddForce (vitesseVertical * _transform.up, ForceMode.VelocityChange);
-					}
-				}
-			} else {
-				previousStep = null;
-			}
-		}
-   	}
-
-	private float produitScalaire(Vector3 vecteur1,Vector3 vecteur2){
-		return Vector3.Scale (vecteur1, vecteur2).sqrMagnitude;
 	}
 
-	private void PlayFootStepAudio(float speed)
+	private void playFootStepAudio(float speed)
 	{
 		int lastIndex = 0;
 		int n = 0;
@@ -135,78 +162,44 @@ public class MoveScript : MonoBehaviour {
 		lastIndex = n;
 	}
 
-	/*void OnCollisionEnter(Collision collision)	{
-		Vector3 firstContactPoint = Vector3.zero;
-
-		foreach (ContactPoint contact in collision.contacts){
-			Vector3 distanceTotalVector = contact.point - transform.position;
-
-			Vector3 rayon = Vector3.ProjectOnPlane (distanceTotalVector, _transform.up);
-
-			float angleForward = Vector3.Angle(transform.forward, rayon);
-
-			//Permet de négliger les colision trop proche du centre (pied et tête)
-			//Pour prendre uniquement les collision frontal
-			if(rayon.magnitude > .3f && angleForward < 45f){
-				firstContactPoint = contact.point;
-				break;
-			}
-		}
-
-		if (firstContactPoint != Vector3.zero) {
-			Vector3 rayon = Vector3.ProjectOnPlane (firstContactPoint - transform.position, _transform.up);
-
-			Vector3 directionContact = rayon.normalized;
-
-			RaycastHit hitInfo;
-			if (Physics.Raycast (transform.position + 2 * transform.up, directionContact, out hitInfo)) {
-				if (null != _rigidbody) {
-					_rigidbody.AddForce (-.5f * directionContact, ForceMode.VelocityChange);
-				} 
-			} else {
-				RaycastHit hitUpInfo;
-				RaycastHit hitDown;
-				bool grimpe = false;
-
-				//On regarde les deux limite
-				if (Physics.Raycast (transform.position + 2 * transform.up + directionContact, transform.up, out hitUpInfo, 3f) &&
-				   Physics.Raycast (transform.position + 2 * transform.up + directionContact, -transform.up, out hitDown, 3f)) {
-					//On vérifie que le haut et le bas à au mois 3 metre
-					float distance = Vector3.Distance (hitUpInfo.point, hitDown.point);
-					if (distance > 3f) {
-						grimpe = true;
-					}
-				} else {		//Une direction a plus de 3 metre de direction, on peut grimper
-					grimpe = true;
-				}
-
-				if (grimpe && _rigidbody && false) {
-					StartCoroutine (grimperAuSommet (directionContact));
-				}
-			}
-		} else if (collision.contacts.Length > 0) {
-			Vector3 versContact = collision.contacts[0].point - (transform.position +_transform.up);
-			if (null != _rigidbody) {
-				_rigidbody.AddForce (Vector3.Reflect (versContact, collision.contacts [0].normal), ForceMode.Force);
-			}
-		}
-	}*/
-
-
 	/**
-	 * Rigidbody obligatoire
-	 * 
-	 * */
-	private IEnumerator grimperAuSommet(Vector3 direction){
-		RaycastHit hit;
-		while(Physics.Raycast (transform.position , direction, out hit, 3f)) {
-			_rigidbody.AddForce (0.5f * _transform.up * Time.deltaTime, ForceMode.VelocityChange);
-			yield return null;
-		}
+	 * On vérifie si en face ou a 45° de la vu il y a une marche
+	 */
+	private void stepClimbing(Vector3 direction)
+    {
+		isStepClimbing = false;
+		RaycastHit hitLower;
+		Vector3 direction45 = Quaternion.AngleAxis(45, Vector3.up) * direction;
+		Vector3 directionMinus45 = Quaternion.AngleAxis(-45, Vector3.up) * direction;
 
-		if (null != _rigidbody) {
-			_rigidbody.AddForce (1f * direction, ForceMode.VelocityChange);
-		} 
-		yield return null;
+		if (Physics.Raycast(stepRayLower.transform.position, direction, out hitLower, 0.1f))
+		{
+			RaycastHit hitUpper;
+			if (!Physics.Raycast(stepRayUpper.transform.position, direction, out hitUpper, 0.2f))
+			{
+				_rigidbody.position -= new Vector3(0f, -_stepSmooth, 0f);
+				isStepClimbing = true;
+			}
+		}
+		else if (Physics.Raycast(stepRayLower.transform.position, direction45, out hitLower, 0.1f))
+		{
+
+			RaycastHit hitUpper45;
+			if (!Physics.Raycast(stepRayUpper.transform.position, direction45, out hitUpper45, 0.2f))
+			{
+				_rigidbody.position -= new Vector3(0f, -_stepSmooth, 0f);
+				isStepClimbing = true;
+			}
+		}
+		else if (Physics.Raycast(stepRayLower.transform.position, directionMinus45, out hitLower, 0.1f))
+		{
+
+			RaycastHit hitUpperMinus45;
+			if (!Physics.Raycast(stepRayUpper.transform.position, directionMinus45, out hitUpperMinus45, 0.2f))
+			{
+				_rigidbody.position -= new Vector3(0f, -_stepSmooth, 0f);
+				isStepClimbing = true;
+			}
+		}
 	}
 }
