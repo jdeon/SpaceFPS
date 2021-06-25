@@ -30,7 +30,7 @@ public class suivreParcour : MonoBehaviour, IActivable {
     // Use this for initialization
     void Start () {
 		t = 0;
-		precisionCalcul = .1f;
+		precisionCalcul = .02f;
 		if (object.Equals(Parcours.listDesParcours, null) || ! Parcours.listDesParcours.ContainsKey (parcours.nomParcour)) {
 			parcours.initialisationParcours ();
 		}
@@ -81,14 +81,28 @@ public class suivreParcour : MonoBehaviour, IActivable {
 		positionDepart = transform;
 		this.objectRigidbody = gameObject.GetComponent<Rigidbody>();
 		if (null != objectRigidbody){
-			this.objectRigidbody.isKinematic = false;
+			this.objectRigidbody.isKinematic = true;
+			this.objectRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 		}
 		this.directionDebut = (this.parcours.listEtapeTransform[0].position - this.transform.position).normalized;
 		vitesseDebut = this.parcours.listTempsPourProchaineEtape [0] > 0 ? vitesseRelative * Vector3.Distance(this.parcours.listEtapeTransform [0].position, positionDepart.position) / parcours.listTempsPourProchaineEtape [0] : 0;
-		StartCoroutine ("suivreLeParvours");
+		//StartCoroutine ("suivreLeParvours");
 	}
 
 	// FixedUpdate is called once per fixed deltatime
+	void FixedUpdate(){
+		if(!this.isFini && this.actif) {
+			if (modeCinematique) {
+				precisionCalcul = Time.deltaTime;
+			}
+			if (this.etapeEnCours == 0) {
+				allerVersDebutParcours ();
+			} else {
+				suivreParcours ();
+			}
+		}
+	}
+
 	private IEnumerator suivreLeParvours () {
 		while(!this.isFini && this.actif) {
 			if (modeCinematique) {
@@ -112,7 +126,7 @@ public class suivreParcour : MonoBehaviour, IActivable {
 	void allerVersDebutParcours(){
 		//
 		if (vitesseDebut > 0 && null != this.objectRigidbody) {
-			this.objectRigidbody.velocity = directionDebut * this.vitesseDebut;
+			this.objectRigidbody.MovePosition(this.objectRigidbody.position + directionDebut * this.vitesseDebut * Time.deltaTime);
 		} else if (parcours.listTempsPourProchaineEtape [0] > 0){
 			transform.position = Vector3.Lerp (positionDepart.position, parcours.listEtapeTransform [0].position, t / parcours.listTempsPourProchaineEtape [0]);
 		} else {

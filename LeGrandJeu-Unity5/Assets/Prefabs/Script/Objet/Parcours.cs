@@ -536,6 +536,7 @@ public class Parcours : MonoBehaviour {
 
 			//Si la cible a un rigidbody on applique la force, sinon on la télétransporte
 			if (null != rigidTarget) {
+				/*
 				Vector3 direction = (pointDestination - transformTarget.position).normalized;
 				float vitesse = (pointDestination - transformTarget.position).magnitude / delaiEntreCalcul;
 
@@ -544,6 +545,10 @@ public class Parcours : MonoBehaviour {
 				double nouvelleVitesse = ancienneVitesse.magnitude == 0 || vitesse < securiteIncrementationVitesse * rigidTarget.velocity.magnitude ? vitesse : 1.5 * rigidTarget.velocity.magnitude;
 
 				rigidTarget.velocity = direction * (float)nouvelleVitesse;
+				*/
+
+				rigidTarget.MovePosition (pointDestination);
+
 			} else {
 				transformTarget.position = pointDestination;
 			}
