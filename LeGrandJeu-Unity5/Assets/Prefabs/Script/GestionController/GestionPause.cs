@@ -37,6 +37,8 @@ public class GestionPause : MonoBehaviour {
 				Cursor.visible = false;
 				Time.timeScale = 1;
 			}
+
+			changeEtat = false;
 		}
 
 		if (Input.GetKeyDown (KeyCode.Escape)) {
