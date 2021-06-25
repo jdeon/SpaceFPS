@@ -16,7 +16,7 @@ public class RotationContinue : MonoBehaviour, IActivable {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (this.actif) {
 			transform.Rotate (AngleXParSec * Time.deltaTime, AngleYParSec * Time.deltaTime, AngleZParSec * Time.deltaTime);
 		}
