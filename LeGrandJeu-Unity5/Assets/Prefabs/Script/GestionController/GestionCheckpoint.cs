@@ -6,6 +6,7 @@ public class GestionCheckpoint : MonoBehaviour {
 
 	public GameObject objGroupCheckpoint;
 	public int numLevelActuel;
+	public int debbugCheckPoint;//FIXME a supprimer
 
 	private CheckPoint checkPointActuel;
 	private string affichage;
@@ -52,9 +53,33 @@ public class GestionCheckpoint : MonoBehaviour {
 				this.checkPointActuel = futurCheckpoint;
 				StartCoroutine (affichageCheckPoint());
 				if (this.checkPointActuel.checkPointDeSauvegarde) {
-					string nivEtape = Constantes.PP_LEVEL + "_" + numLevelActuel + "_" + Constantes.PP_CHECKPOINT + "_" + this.checkPointActuel.getIdCheckPoint();
+					string nivEtape = mapActualCheckPointToText(this.numLevelActuel, this.checkPointActuel.getIdCheckPoint());
 					PlayerPrefs.SetString (PlayerPrefs.GetString(Constantes.PP_JOUEUR_COURANT), nivEtape);
 				}
+			}
+		}
+	}
+
+	/**
+	 * map value to save format : lvl_???_checkP_???
+	 * */
+	public static string mapActualCheckPointToText(int numLevel, int numCheckPoint){
+		return Constantes.PP_LEVEL + "_" + numLevel + "_" + Constantes.PP_CHECKPOINT + "_" + numCheckPoint;
+	}
+
+	/**
+	 * map format : lvl_???_checkP_??? to real value
+	 * */
+	public static void mapSaveCheckpointDataToInt(string saveText, out int numLevel, out int numCheckPoint){
+		numLevel = 0;
+		numCheckPoint = -1;
+
+		if (null != saveText) {
+			string[] tabInfoEtape = saveText.Split ('_');
+
+			if (tabInfoEtape.Length == 4) {
+				int.TryParse (tabInfoEtape [1], out numLevel);
+				int.TryParse (tabInfoEtape [3], out numCheckPoint);
 			}
 		}
 	}
@@ -74,14 +99,18 @@ public class GestionCheckpoint : MonoBehaviour {
 	public void loadAtCheckPoint(){
 		List<Transform> listCheckpointALancer = new List<Transform>();
 		int actualCheckPoint = -1;
-		string etapeActuel = PlayerPrefs.GetString (PlayerPrefs.GetString(Constantes.PP_JOUEUR_COURANT)); //format : lvl_???_checkP_???
-		string[] tabInfoEtape = etapeActuel.Split ('_');
-		numNiveau = 0;
-		int.TryParse(tabInfoEtape[1], out numNiveau);
+		string etapeActuel = PlayerPrefs.GetString (PlayerPrefs.GetString(Constantes.PP_JOUEUR_COURANT)); 
+
+
+		if (debbugCheckPoint >= 0) {
+			//FIXME to delete
+			numNiveau = numLevelActuel;
+			actualCheckPoint = debbugCheckPoint;
+		} else {
+			mapSaveCheckpointDataToInt (etapeActuel, out numNiveau, out actualCheckPoint);
+		}
 
 		if (numLevelActuel == numNiveau) {
-			int.TryParse (tabInfoEtape [3], out actualCheckPoint);
-
 			//On prend toute les checkpoint inferieur pour remplir la list
 			for (int numChild = 0; numChild < objGroupCheckpoint.transform.childCount; numChild++) {
 				Transform actualChild = objGroupCheckpoint.transform.GetChild (numChild);

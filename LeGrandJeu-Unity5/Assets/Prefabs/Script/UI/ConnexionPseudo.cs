@@ -28,16 +28,12 @@ public class ConnexionPseudo : ConditionEventAbstract {
 			if (mainInputField.text == "SuperAdminKoala") {
 				nivActuel = 6;
 				idCheckpointActuel = 1;
-				PlayerPrefs.SetString ("SuperAdminKoala", Constantes.PP_LEVEL + "_6_" + Constantes.PP_CHECKPOINT + "_1");
+				PlayerPrefs.SetString ("SuperAdminKoala", GestionCheckpoint.mapActualCheckPointToText(6,1));
 				PlayerPrefs.SetString (Constantes.PP_JOUEUR_COURANT, "SuperAdminKoala");
 				this.isActive = true;
 			} else if (PlayerPrefs.HasKey (mainInputField.text)) {
 				string etapeActuel = PlayerPrefs.GetString (mainInputField.text); //format : lvl_???_checkP_???
-				string[] tabInfoEtape = etapeActuel.Split ('_');
-				nivActuel = 0;
-				idCheckpointActuel = 0;
-				int.TryParse(tabInfoEtape[1], out nivActuel);
-				int.TryParse(tabInfoEtape[3], out idCheckpointActuel);
+				GestionCheckpoint.mapSaveCheckpointDataToInt (etapeActuel, out nivActuel, out idCheckpointActuel);
 
 				PlayerPrefs.SetString (Constantes.PP_JOUEUR_COURANT, mainInputField.text);
 				this.isActive = true;
@@ -52,7 +48,7 @@ public class ConnexionPseudo : ConditionEventAbstract {
 		if(mainInputField.text != ""){
 			nivActuel = 1;
 			idCheckpointActuel = 1;
-			PlayerPrefs.SetString (mainInputField.text, Constantes.PP_LEVEL + "_1_" + Constantes.PP_CHECKPOINT + "_1");
+			PlayerPrefs.SetString (mainInputField.text, GestionCheckpoint.mapActualCheckPointToText(1,1));
 			PlayerPrefs.SetString (Constantes.PP_JOUEUR_COURANT, mainInputField.text);
 			this.isActive = true;
 		}
