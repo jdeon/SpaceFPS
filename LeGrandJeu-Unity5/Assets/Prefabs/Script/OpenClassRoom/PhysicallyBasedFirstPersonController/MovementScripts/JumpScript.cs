@@ -25,7 +25,7 @@ public class JumpScript : MonoBehaviour {
 	private AudioClip _laundingSound;
 
 	private bool _canJump = true;
-	private bool _inGround = true;
+	private Collider _ground;
 
 	private AudioSource _audioSource;
 
@@ -44,7 +44,7 @@ public class JumpScript : MonoBehaviour {
 		processInGround();
 
 		//Evite les saut constant
-		if (!_canJump && Input.GetAxis ("Jump") == 0 && _inGround) {
+		if (!_canJump && Input.GetAxis ("Jump") == 0 && isInGround()) {
 			if (_laundingSound != null) {
 				_audioSource.clip = _laundingSound;
 				_audioSource.PlayOneShot (_audioSource.clip);
@@ -52,7 +52,7 @@ public class JumpScript : MonoBehaviour {
 			_canJump = true;
 		}
 
-		if (_canJump && Input.GetAxis("Jump") > 0 && !_moveScript.isSlopeTooSteep && (_inGround || _moveScript.isStepClimbing))
+		if (_canJump && Input.GetAxis("Jump") > 0 && !_moveScript.isSlopeTooSteep && (isInGround() || _moveScript.isStepClimbing))
 		{
 			_rigidbody.AddForce(_transform.up * _jumpSpeed, ForceMode.VelocityChange);
 			if (_jumpSound != null) {
@@ -64,11 +64,20 @@ public class JumpScript : MonoBehaviour {
 	}
 
 	private void processInGround(){
-		_inGround = Physics.SphereCast (_transform.position + _transform.up * _feetRadius * 1.1f, _feetRadius, _transform.up * -1f, out _hit, 0.1f) && !_hit.collider.isTrigger;
+		if (Physics.SphereCast (_transform.position + _transform.up * _feetRadius * 1.1f, _feetRadius, _transform.up * -1f, out _hit, 0.1f) && !_hit.collider.isTrigger) {
+			this._ground = _hit.collider;
+		} else {
+			this._ground = null;
+		}
+	}
+
+	public Collider getGround()
+	{
+		return this._ground;
 	}
 
 	public bool isInGround()
 	{
-		return _inGround;
+		return null != this._ground;
 	}
 }

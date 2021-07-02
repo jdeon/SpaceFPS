@@ -19,6 +19,22 @@ public class PlateformTransmissionForce : MonoBehaviour {
 		_rigidbody = transform.parent.GetComponent<Rigidbody> ();
 
 		rigidBodyInside = new HashSet<Rigidbody> ();
+
+		//Création d'un collider si non existant
+		BoxCollider[] actualColliders = GetComponents<BoxCollider>();
+		bool hasTriggerBox = false;
+		foreach (BoxCollider actualCollider in actualColliders) {
+			if (actualCollider.isTrigger) {
+				hasTriggerBox = true;
+				break;
+			}
+		}
+
+		if (!hasTriggerBox) {
+			BoxCollider triggerCollider = gameObject.AddComponent<BoxCollider>();
+			triggerCollider.isTrigger = true;
+			triggerCollider.size = Vector3.one + new Vector3 (1f / transform.localScale.x, 1f / transform.localScale.y, 1f / transform.localScale.z);
+		}
 	}
 
 	void FixedUpdate(){

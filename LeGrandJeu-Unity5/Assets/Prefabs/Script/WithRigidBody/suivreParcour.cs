@@ -46,7 +46,7 @@ public class suivreParcour : MonoBehaviour, IActivable {
 	}
 
 	void Update(){
-		if (isFini){
+		if (this.isFini){
 			if (isDestroyAtEnd) {
 				Destroy (gameObject, delayToDestroy);
 			} else if (null != objectRigidbody) {
@@ -78,14 +78,14 @@ public class suivreParcour : MonoBehaviour, IActivable {
 	}
 
 	private void preparerLancementCoroutine(){
-		positionDepart = transform;
+		this.positionDepart = transform;
 		this.objectRigidbody = gameObject.GetComponent<Rigidbody>();
 		if (null != objectRigidbody){
 			this.objectRigidbody.isKinematic = true;
 			this.objectRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 		}
 		this.directionDebut = (this.parcours.listEtapeTransform[0].position - this.transform.position).normalized;
-		vitesseDebut = this.parcours.listTempsPourProchaineEtape [0] > 0 ? vitesseRelative * Vector3.Distance(this.parcours.listEtapeTransform [0].position, positionDepart.position) / parcours.listTempsPourProchaineEtape [0] : 0;
+		this.vitesseDebut = this.parcours.listTempsPourProchaineEtape [0] > 0 ? vitesseRelative * Vector3.Distance(this.parcours.listEtapeTransform [0].position, positionDepart.position) / parcours.listTempsPourProchaineEtape [0] : 0;
 		//StartCoroutine ("suivreLeParvours");
 	}
 
@@ -125,7 +125,7 @@ public class suivreParcour : MonoBehaviour, IActivable {
 
 	void allerVersDebutParcours(){
 		//
-		if (vitesseDebut > 0 && null != this.objectRigidbody) {
+		if (this.vitesseDebut > 0 && null != this.objectRigidbody) {
 			this.objectRigidbody.MovePosition(this.objectRigidbody.position + directionDebut * this.vitesseDebut * Time.deltaTime);
 		} else if (parcours.listTempsPourProchaineEtape [0] > 0){
 			transform.position = Vector3.Lerp (positionDepart.position, parcours.listEtapeTransform [0].position, t / parcours.listTempsPourProchaineEtape [0]);
@@ -136,7 +136,7 @@ public class suivreParcour : MonoBehaviour, IActivable {
 		if (parcours.isRotating && parcours.listTempsPourProchaineEtape [0] != 0) {
 			transform.rotation = Quaternion.Slerp (positionDepart.rotation, parcours.listEtapeTransform [0].rotation, t / parcours.listTempsPourProchaineEtape [0]);
 		}
-		t += (vitesseRelative * precisionCalcul);
+		t += (vitesseRelative * Time.deltaTime);
 		if (t > parcours.listTempsPourProchaineEtape [0]) {
 			this.etapeEnCours = 1;
 		}
@@ -170,7 +170,7 @@ public class suivreParcour : MonoBehaviour, IActivable {
 				parcours.parcourirEtape (transform, GetComponent<Rigidbody>(), tempsSurEtapeEnCours,this.etapeEnCours, precisionCalcul);
 				t += vitesseRelative * precisionCalcul;
 			} else {
-				isFini = true;
+				this.isFini = true;
 			}
 			break;
 

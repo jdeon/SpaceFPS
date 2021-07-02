@@ -108,25 +108,36 @@ public class MoveScript : MonoBehaviour {
 	private void applyMovements(Vector3 direction, bool isTropPentu)
 	{
 		var rigidVelocity = new Vector3(_rigidbody.velocity.x, _rigidbody.velocity.y, _rigidbody.velocity.z);
-		var speed = rigidVelocity - Vector3.Scale(_transform.up, rigidVelocity);
+		var horizontalSpeed = rigidVelocity - Vector3.Scale(_transform.up, rigidVelocity);
+		var relativeGroundVelocity = Vector3.zero;
+
+		if (_jumpScript.isInGround () && _jumpScript.getGround ().GetComponent<Rigidbody>()){
+			relativeGroundVelocity = _jumpScript.getGround ().GetComponent<Rigidbody>().velocity;
+			horizontalSpeed -= new Vector3 (relativeGroundVelocity.x, 0, relativeGroundVelocity.z);
+		}
+
 
 		if (_jumpScript.isInGround () && (Vector3.zero == direction || isTropPentu)) {
-			if (speed.magnitude < _maxVelocity / 10) {
+			if ((horizontalSpeed).magnitude < _maxVelocity / 10) {
 				//Arret personnage
-				_rigidbody.velocity = rigidVelocity - speed;
+				_rigidbody.velocity = relativeGroundVelocity;
 			} else {
 				//Deceleration
-				var speeddelta = (-speed.normalized * _decelerationForce);
+				float dinamicFriction = _jumpScript.getGround().material.dynamicFriction;
+				var speeddelta = (-horizontalSpeed.normalized * _decelerationForce * (2*dinamicFriction));
 				_rigidbody.AddForce (speeddelta, ForceMode.Acceleration);
 			}
-		} else if (speed.magnitude < _maxVelocity) {
+		} else if ((horizontalSpeed).magnitude < _maxVelocity) {
 			var speeddelta = (direction * _accelerationForce);
 			_rigidbody.AddForce (speeddelta, ForceMode.Acceleration);
 
 		} else {
-			var speeddelta = (direction - speed.normalized) * _accelerationForce;
+			float dinamicFriction = _jumpScript.isInGround() ? _jumpScript.getGround().material.dynamicFriction : 0.5f;
+			var speeddelta = (direction - horizontalSpeed.normalized) * 2 *dinamicFriction * _accelerationForce;
 			_rigidbody.AddForce (speeddelta, ForceMode.Acceleration);
 		}
+
+		_rigidbody.AddForce (relativeGroundVelocity * Time.deltaTime, ForceMode.VelocityChange);
 	}
 
 	private void generateFootSound(Vector3 direction)
