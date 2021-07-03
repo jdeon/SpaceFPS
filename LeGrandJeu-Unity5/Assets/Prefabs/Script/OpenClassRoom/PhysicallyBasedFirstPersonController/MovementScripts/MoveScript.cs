@@ -111,8 +111,8 @@ public class MoveScript : MonoBehaviour {
 		var horizontalSpeed = rigidVelocity - Vector3.Scale(_transform.up, rigidVelocity);
 		var relativeGroundVelocity = Vector3.zero;
 
-		if (_jumpScript.isInGround () && _jumpScript.getGround ().GetComponent<Rigidbody>()){
-			relativeGroundVelocity = _jumpScript.getGround ().GetComponent<Rigidbody>().velocity;
+		if (_jumpScript.isInGround () && null != _jumpScript.getGround ().attachedRigidbody){
+			relativeGroundVelocity = _jumpScript.getGround ().attachedRigidbody.velocity;
 			horizontalSpeed -= new Vector3 (relativeGroundVelocity.x, 0, relativeGroundVelocity.z);
 		}
 
