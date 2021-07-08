@@ -112,7 +112,22 @@ public class MoveScript : MonoBehaviour {
 		var relativeGroundVelocity = Vector3.zero;
 
 		if (_jumpScript.isInGround () && null != _jumpScript.getGround ().attachedRigidbody){
-			relativeGroundVelocity = _jumpScript.getGround ().attachedRigidbody.velocity;
+			Rigidbody rigididGround = _jumpScript.getGround ().attachedRigidbody;
+
+			//On enleve le mouvement du sol
+			if(!Vector3.zero.Equals(rigididGround.velocity)){
+				relativeGroundVelocity = rigididGround.velocity;
+			}
+
+			//On enleve la rotation du du sol
+			//On enleve le mouvement du sol
+			if(!Vector3.zero.Equals(rigididGround.angularVelocity)){
+				//Produit en croix de la rotaion et de la direction vers les centre
+				Vector3 rayon = transform.position - rigididGround.transform.TransformPoint( rigididGround.centerOfMass);
+				Vector3 directionDeplacement = Vector3.Cross (rigididGround.angularVelocity, rayon);
+				relativeGroundVelocity += directionDeplacement ;
+			}
+
 			horizontalSpeed -= new Vector3 (relativeGroundVelocity.x, 0, relativeGroundVelocity.z);
 		}
 
