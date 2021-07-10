@@ -42,11 +42,15 @@ public class TeteChercheuseInertie : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision)
 	{
-		if(collision.transform == targetTransform){
-			//blesse
-		}
-
 		destructionProjectile ();
+	}
+
+	public void OnTriggerEnter(Collider other)
+	{
+		if(other.gameObject.layer == Constantes.LAYER_CONTROLLER)
+		{
+			destructionProjectile ();
+		} 
 	}
 
 

@@ -89,7 +89,7 @@ public class GestionCheckpoint : MonoBehaviour {
 	 * */
 	public void respawnCheckPoint(){
 		Transform transScripDeRespawn = this.checkPointActuel.transform.Find ("checkPointWhenRespawn");
-		StartCoroutine (lancerScriptCheckpoint(transScripDeRespawn));
+		StartCoroutine (lancerScriptCheckpoint(transScripDeRespawn, 0f));
 		teleportController (this.checkPointActuel);
 	}
 
@@ -125,9 +125,11 @@ public class GestionCheckpoint : MonoBehaviour {
 			}
 
 			//Jouer le script de chargement de tous les checkpoints inferieurs
+			float delayBeforeLoad = 0f;
 			foreach (Transform tranfCheckpoint in listCheckpointALancer) {
 				if (null != tranfCheckpoint) {
-					StartCoroutine (lancerScriptCheckpoint (tranfCheckpoint.Find ("checkPointToLoaded")));
+					StartCoroutine (lancerScriptCheckpoint (tranfCheckpoint.Find ("checkPointToLoaded"), delayBeforeLoad));
+					delayBeforeLoad += 0.01f;
 				}
 			}
 			if (listCheckpointALancer.Count > 0) {
@@ -136,11 +138,11 @@ public class GestionCheckpoint : MonoBehaviour {
 		}
 	}
 		
-	private IEnumerator lancerScriptCheckpoint(Transform transformCheckpointALancer){
+	private IEnumerator lancerScriptCheckpoint(Transform transformCheckpointALancer, float delayBeforeLoad){
 		if (null != transformCheckpointALancer) {
-			/*transformCheckpointALancer.gameObject.SetActive (true);
-			yield return new WaitForSeconds (2f);
-			transformCheckpointALancer.gameObject.SetActive (false);*/
+			if (delayBeforeLoad > 0) {
+				yield return new WaitForSeconds (delayBeforeLoad);
+			}
 
 			ConditionEventAbstract conditionAActiver = transformCheckpointALancer.GetComponent<ConditionEventAbstract> ();
 			if (null != conditionAActiver) {
