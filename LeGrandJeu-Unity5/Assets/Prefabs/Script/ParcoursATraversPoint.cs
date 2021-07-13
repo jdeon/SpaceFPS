@@ -56,7 +56,7 @@ public class ParcoursATraversPoint : MonoBehaviour {
 			isTrigger =false;
 			hit = new RaycastHit();
 			if (Physics.Linecast (coordOrigin, coordTarget, out hit)) {
-				if (null == hit.collider || hit.collider.gameObject.layer == layerRayCastDefault.value) {
+				if (null == hit.collider || (!hit.collider.isTrigger && hit.collider.gameObject.layer == layerRayCastDefault.value)) {
 					return false;
 				}
 				//On touche directement le controller
@@ -64,7 +64,7 @@ public class ParcoursATraversPoint : MonoBehaviour {
 					return true;
 				}
 				//On touche un collider Trigger donc on reocommence a partir du point de colision
-				else if (hit.collider.isTrigger && nbObstacleMax >= 0 && hit.collider.gameObject.layer == layerRayCastDetectZone.value) {
+				else if ((hit.collider.isTrigger || hit.collider.gameObject.layer == layerRayCastDetectZone.value) && nbObstacleMax >= 0) {
 					isTrigger = true;
 					Vector3 vectorToTarget = coordTarget - coordOrigin;
 					vectorToTarget.Normalize ();

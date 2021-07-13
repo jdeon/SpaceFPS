@@ -27,7 +27,7 @@ public class TeleportEnemyTueur : MonoBehaviour, IResetable, IActivable {
 
 	void OnTriggerEnter(Collider other) {
 		GestionSystemVieController gestionVieController = other.GetComponent<GestionSystemVieController> ();
-		if (null != gestionVieController) {
+		if (null != gestionVieController && isActif) {//Faut il ajouter un raycast ?
 			gestionVieController.tue();
 		}
 	}
