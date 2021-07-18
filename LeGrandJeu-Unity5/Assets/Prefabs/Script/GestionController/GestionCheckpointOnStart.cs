@@ -15,19 +15,6 @@ public class GestionCheckpointOnStart : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		loadAtCheckPoint ();
-
-		if (null == this.checkPointActuel) {
-			//On prend toute les checkpoint inferieur pour remplir la list
-			for (int numChild = 0; numChild < objGroupCheckpoint.transform.childCount; numChild++) {
-				Transform actualChild = objGroupCheckpoint.transform.GetChild (numChild);
-				CheckPoint checkPoint = actualChild.GetComponent<CheckPoint> ();
-				if (null != checkPoint && checkPoint.actif) {
-					this.checkPointActuel = checkPoint;
-					GestionCheckpoint gestionCheckpointController = controller.GetComponent<GestionCheckpoint> ();
-					gestionCheckpointController.setCheckPointActuel (checkPoint);
-				}
-			}
-		}
 	}
 
 	/**
@@ -70,7 +57,7 @@ public class GestionCheckpointOnStart : MonoBehaviour {
 				}
 			}
 			if (listCheckpointALancer.Count > 0) {
-				teleportController (listCheckpointALancer [listCheckpointALancer.Count - 1].gameObject.GetComponent<CheckPoint> ());
+				initCheckpoint (listCheckpointALancer [listCheckpointALancer.Count - 1].gameObject.GetComponent<CheckPoint> ());
 			}
 		}
 	}
@@ -92,8 +79,15 @@ public class GestionCheckpointOnStart : MonoBehaviour {
 	/**
 	 * Telport au checkpoint
 	 * */
-	private void teleportController(CheckPoint checkPoint){
+	private void initCheckpoint(CheckPoint checkPoint){
 		if (null != checkPoint && null != controller) {
+			checkPoint.actif = true;
+			this.checkPointActuel = checkPoint;
+
+			GestionCheckpoint gestionCheckpointController = controller.GetComponent<GestionCheckpoint> ();
+			gestionCheckpointController.setCheckPointActuel (checkPoint);
+
+			//Teleport to checkpoint
 			controller.transform.position = checkPoint.transformRespawn.position;
 			controller.transform.rotation = checkPoint.transformRespawn.rotation;
 			controller.GetComponent<Rigidbody> ().velocity = Vector3.zero;

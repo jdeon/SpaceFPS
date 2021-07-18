@@ -80,6 +80,17 @@ public class Armure {
 		}
 	}
 
+	public void amelioration (int pointArmureAjout){
+		this.briser = false;
+
+		this.protectionRestante += pointArmureAjout;
+		if (this.protectionRestante < this.protectionMax) {
+			this.protectionMax = this.protectionRestante;
+		}
+
+		modificationGUI (this.protectionRestante);
+	}
+
 	/**
 	 * Gestion de laffichage des point d armure
 	 * */
