@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DebugGestionTemps : MonoBehaviour {
+public class DebugTools : MonoBehaviour {
 
 	public float referentielTemps =1f;
+
+	public int debbugCheckPoint;
 
 	void Start () {
 		Object[] objects = Resources.FindObjectsOfTypeAll <AudioListener> ();
@@ -15,6 +17,8 @@ public class DebugGestionTemps : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		Time.timeScale = referentielTemps;
+		if (referentielTemps != 1f) {
+			Time.timeScale = referentielTemps;
+		}
 	}
 }

@@ -6,7 +6,6 @@ public class GestionCheckpoint : MonoBehaviour {
 
 	public GameObject objGroupCheckpoint;
 	public int numLevelActuel;
-	public int debbugCheckPoint;//FIXME a supprimer
 
 	private CheckPoint checkPointActuel;
 	private string affichage;
@@ -14,19 +13,7 @@ public class GestionCheckpoint : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		loadAtCheckPoint ();
 		affichage = "";
-
-		if (null == this.checkPointActuel) {
-			//On prend toute les checkpoint inferieur pour remplir la list
-			for (int numChild = 0; numChild < objGroupCheckpoint.transform.childCount; numChild++) {
-				Transform actualChild = objGroupCheckpoint.transform.GetChild (numChild);
-				CheckPoint checkPoint = actualChild.GetComponent<CheckPoint> ();
-				if (null != checkPoint && checkPoint.actif) {
-					checkPointActuel = checkPoint;
-				}
-			}
-		}
 	}
 
 	public void OnGUI()
@@ -42,11 +29,7 @@ public class GestionCheckpoint : MonoBehaviour {
 	public void OnTriggerEnter(Collider other) {
 		GameObject objOther = (other.gameObject);
 		if (objOther.tag == Constantes.TAG_RESPAWN) {
-			if (null == this.checkPointActuel) {
-				loadAtCheckPoint ();
-			} else {
-				respawnCheckPoint ();
-			}
+			respawnCheckPoint ();
 		} else if (objOther.GetComponent<CheckPoint> () != null) {
 			CheckPoint futurCheckpoint = objOther.GetComponent<CheckPoint> ();
 			if (null == this.checkPointActuel || (futurCheckpoint.checkPointDoubleSens && this.checkPointActuel.checkPointDoubleSens  && this.checkPointActuel.getIdCheckPoint() != futurCheckpoint.getIdCheckPoint()) || (futurCheckpoint.getIdCheckPoint() > this.checkPointActuel.getIdCheckPoint())) {
@@ -92,51 +75,6 @@ public class GestionCheckpoint : MonoBehaviour {
 		StartCoroutine (lancerScriptCheckpoint(transScripDeRespawn, 0f));
 		teleportController (this.checkPointActuel);
 	}
-
-	/**
-	 * Cette méthode est appelée au chargement du niveau
-	 * */
-	public void loadAtCheckPoint(){
-		List<Transform> listCheckpointALancer = new List<Transform>();
-		int actualCheckPoint = -1;
-		string etapeActuel = PlayerPrefs.GetString (PlayerPrefs.GetString(Constantes.PP_JOUEUR_COURANT)); 
-
-
-		if (debbugCheckPoint >= 0) {
-			//FIXME to delete
-			numNiveau = numLevelActuel;
-			actualCheckPoint = debbugCheckPoint;
-		} else {
-			mapSaveCheckpointDataToInt (etapeActuel, out numNiveau, out actualCheckPoint);
-		}
-
-		if (numLevelActuel == numNiveau) {
-			//On prend toute les checkpoint inferieur pour remplir la list
-			for (int numChild = 0; numChild < objGroupCheckpoint.transform.childCount; numChild++) {
-				Transform actualChild = objGroupCheckpoint.transform.GetChild (numChild);
-				//format checkpointNum_??? actualChild.name.Split ('_')
-				int numCheckpoint = actualChild.transform.GetSiblingIndex ();
-				if (actualChild.name.Split ('_').Length > 1 && numCheckpoint <= actualCheckPoint) {
-					while (listCheckpointALancer.Count < numCheckpoint) {
-						listCheckpointALancer.Add (null);
-					}
-					listCheckpointALancer.Insert (numCheckpoint, actualChild);
-				}
-			}
-
-			//Jouer le script de chargement de tous les checkpoints inferieurs
-			float delayBeforeLoad = 0f;
-			foreach (Transform tranfCheckpoint in listCheckpointALancer) {
-				if (null != tranfCheckpoint) {
-					StartCoroutine (lancerScriptCheckpoint (tranfCheckpoint.Find ("checkPointToLoaded"), delayBeforeLoad));
-					delayBeforeLoad += 0.01f;
-				}
-			}
-			if (listCheckpointALancer.Count > 0) {
-				teleportController (listCheckpointALancer [listCheckpointALancer.Count - 1].gameObject.GetComponent<CheckPoint> ());
-			}
-		}
-	}
 		
 	private IEnumerator lancerScriptCheckpoint(Transform transformCheckpointALancer, float delayBeforeLoad){
 		if (null != transformCheckpointALancer) {
@@ -170,5 +108,9 @@ public class GestionCheckpoint : MonoBehaviour {
 		affichage = this.checkPointActuel.checkPointDeSauvegarde ? "SavePoint" : "CheckPoint";
 		yield return new WaitForSeconds(2f);
 		affichage = "";
+	}
+
+	public void setCheckPointActuel(CheckPoint checkPointActuel){
+		this.checkPointActuel = checkPointActuel;
 	}
 }

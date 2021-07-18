@@ -22,7 +22,9 @@ public class GestionCheckpointOnStart : MonoBehaviour {
 				Transform actualChild = objGroupCheckpoint.transform.GetChild (numChild);
 				CheckPoint checkPoint = actualChild.GetComponent<CheckPoint> ();
 				if (null != checkPoint && checkPoint.actif) {
-					checkPointActuel = checkPoint;
+					this.checkPointActuel = checkPoint;
+					GestionCheckpoint gestionCheckpointController = controller.GetComponent<GestionCheckpoint> ();
+					gestionCheckpointController.setCheckPointActuel (checkPoint);
 				}
 			}
 		}
@@ -34,14 +36,17 @@ public class GestionCheckpointOnStart : MonoBehaviour {
 	public void loadAtCheckPoint(){
 		List<Transform> listCheckpointALancer = new List<Transform>();
 		int actualCheckPoint = -1;
-		string etapeActuel = PlayerPrefs.GetString (PlayerPrefs.GetString(Constantes.PP_JOUEUR_COURANT)); //format : lvl_???_checkP_???
-		string[] tabInfoEtape = etapeActuel.Split ('_');
-		numNiveau = 0;
-		int.TryParse(tabInfoEtape[1], out numNiveau);
+		string etapeActuel = PlayerPrefs.GetString (PlayerPrefs.GetString(Constantes.PP_JOUEUR_COURANT));
+
+		DebugTools debugTools = GameObject.FindObjectOfType<DebugTools> ();
+		if (null != debugTools && debugTools.debbugCheckPoint >= 0) {
+			numNiveau = numLevel;
+			actualCheckPoint = debugTools.debbugCheckPoint;
+		} else {
+			GestionCheckpoint.mapSaveCheckpointDataToInt (etapeActuel, out numNiveau, out actualCheckPoint);
+		}
 
 		if (numLevel == numNiveau) {
-			int.TryParse (tabInfoEtape [3], out actualCheckPoint);
-
 			//On prend toute les checkpoint inferieur pour remplir la list
 			for (int numChild = 0; numChild < objGroupCheckpoint.transform.childCount; numChild++) {
 				
@@ -57,9 +62,11 @@ public class GestionCheckpointOnStart : MonoBehaviour {
 			}
 
 			//Jouer le script de chargement de tous les checkpoints inferieurs
+			float delayBeforeLoad = 0f;
 			foreach (Transform tranfCheckpoint in listCheckpointALancer) {
 				if (null != tranfCheckpoint) {
-					StartCoroutine (lancerScriptCheckpoint (tranfCheckpoint.Find ("checkPointToLoaded")));
+					StartCoroutine (lancerScriptCheckpoint (tranfCheckpoint.Find ("checkPointToLoaded"), delayBeforeLoad));
+					delayBeforeLoad += 0.01f;
 				}
 			}
 			if (listCheckpointALancer.Count > 0) {
@@ -68,11 +75,11 @@ public class GestionCheckpointOnStart : MonoBehaviour {
 		}
 	}
 
-	private IEnumerator lancerScriptCheckpoint(Transform transformCheckpointALancer){
+	private IEnumerator lancerScriptCheckpoint(Transform transformCheckpointALancer, float delayBeforeLoad){
 		if (null != transformCheckpointALancer) {
-			/*transformCheckpointALancer.gameObject.SetActive (true);
-			yield return new WaitForSeconds (2f);
-			transformCheckpointALancer.gameObject.SetActive (false);*/
+			if (delayBeforeLoad > 0) {
+				yield return new WaitForSeconds (delayBeforeLoad);
+			}
 
 			ConditionEventAbstract conditionAActiver = transformCheckpointALancer.GetComponent<ConditionEventAbstract> ();
 			if (null != conditionAActiver) {
