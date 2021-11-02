@@ -25,6 +25,7 @@ public class JumpScript : MonoBehaviour {
 	private AudioClip _laundingSound;
 
 	private bool _canJump = true;
+	private float _waitToJump = 0f;
 	private Collider _ground;
 
 	private AudioSource _audioSource;
@@ -43,6 +44,10 @@ public class JumpScript : MonoBehaviour {
 	void FixedUpdate () {
 		processInGround();
 
+		if (_waitToJump > 0f) {
+			_waitToJump -= Time.deltaTime;
+		}
+
 		//Evite les saut constant
 		if (!_canJump && Input.GetAxis ("Jump") == 0 && isInGround()) {
 			if (_laundingSound != null) {
@@ -60,11 +65,12 @@ public class JumpScript : MonoBehaviour {
 				_audioSource.PlayOneShot (_audioSource.clip);
 			}
 			_canJump = false;
+			_waitToJump = 0.5f;
 		}
 	}
 
 	private void processInGround(){
-		if (Physics.SphereCast (_transform.position + _transform.up * _feetRadius * 1.1f, _feetRadius, _transform.up * -1f, out _hit, 0.1f) && !_hit.collider.isTrigger) {
+		if (Physics.SphereCast (_transform.position + _transform.up * _feetRadius * 1.05f, _feetRadius, _transform.up * -1f, out _hit, 0.1f) && !_hit.collider.isTrigger) {
 			this._ground = _hit.collider;
 		} else {
 			this._ground = null;
@@ -78,6 +84,6 @@ public class JumpScript : MonoBehaviour {
 
 	public bool isInGround()
 	{
-		return null != this._ground;
+		return _waitToJump <= 0 && null != this._ground;
 	}
 }
