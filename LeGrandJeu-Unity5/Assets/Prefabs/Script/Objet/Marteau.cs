@@ -4,84 +4,49 @@ using UnityEngine;
 
 public class Marteau : ObjetPortable {
 
-	private static string VERTICAL = "V";
-	private static string HORIZONTAL = "H";
-
 	public string[] attackOrder;
 	private int indexAttack;
 
-	private bool attacking;
-
+	private Animator anim;
 
 	// Use this for initialization
 	void Start () {
-		attacking = false;
+		anim = GetComponent<Animator> ();
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown (0) && !attacking){
+		if (Input.GetMouseButtonDown (0) && null != transform.parent && attackOrder.Length > 0){
 			if (transform.parent.name == "MainDroite" || transform.parent.name == "MainGauche") {
-				string typeAttack;
-
-				if (indexAttack < attackOrder.Length) {
-					typeAttack = attackOrder [indexAttack];
-					indexAttack++;
-				} else {
+				
+				if (indexAttack >= attackOrder.Length) {
 					indexAttack = 0;
-					typeAttack = attackOrder [indexAttack];
 				}
 					
-				StartCoroutine (frappe (typeAttack));
+				frappe (attackOrder [indexAttack]);
+				indexAttack++;
 			}
 		}
 	}
 
-	IEnumerator frappe(string typeAttack){
-		attacking = true;
-		float timeInAttack = 0;
-		//Mains;Objet portable; controller
-		Transform controller = transform.parent.parent.parent;
+	void frappe(string typeAttack){
+		anim.enabled = true;
+		anim.SetTrigger(typeAttack);
+		StartCoroutine (desactivation ());
+	}
 
-		if (typeAttack.ToUpper () == HORIZONTAL) {
-			////Horizontal
-			Vector3 dirPlane = Vector3.ProjectOnPlane(transform.right, controller.up);
-			float angle = Vector3.Angle (transform.up, dirPlane);
+	IEnumerator desactivation(){
+		float timeTodesactivate = .5f;
 
-			//Rotation parallele au sol 0.5s
-			while (timeInAttack < .5f) {
-				transform.Rotate (angle * Time.deltaTime / 0.5f, 0, 0, Space.Self);
-				timeInAttack += Time.deltaTime;
-				yield return null;
-			}
-
-			//Frappe 0.5s -> force
-			Rigidbody rigidB = GetComponent<Rigidbody> ();
-			while (timeInAttack < 1f) {
-				int sens = Vector3.Angle (transform.up, controller.forward) > 0 ? 1 : -1;
-				rigidB.AddTorque (0f,1f * sens,0f,ForceMode.Acceleration);
-				timeInAttack += Time.deltaTime;
-				yield return null;
-			}
-
-			//Retour à la mains 1s
-			Vector3 positionInit = transform.position;
-			Quaternion rotationInit = transform.rotation;
-			while (timeInAttack < 2f) {
-				transform.position = Vector3.Slerp (positionInit, transform.parent.position, timeInAttack - 1f);
-				transform.rotation = Quaternion.Slerp(rotationInit, transform.parent.rotation, timeInAttack - 1f);
-				timeInAttack += Time.deltaTime;
-				yield return null;
-			} 
-		} else if (typeAttack.ToUpper () == VERTICAL) {
-			////Vertial
-			//Rotation 90
+		while (timeTodesactivate < 0) {
+			timeTodesactivate -= Time.deltaTime;
 			yield return null;
 		}
 
-		attacking = false;
-
-		yield return null;
+		while (anim.enabled && !anim.GetCurrentAnimatorStateInfo (0).IsName ("Stable")) {
+			anim.enabled = false;
+			yield return null;
+		}
 	}
 
 }
