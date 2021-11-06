@@ -62,6 +62,11 @@ public class suivreParcour : MonoBehaviour, IActivable {
 		}
 	}
 
+	void OnDestroy()
+	{
+		Parcours.listDesParcours.Remove (parcours.nomParcour);
+	}
+
 	public bool getIsActif(){
 		return this.actif;
 	}
