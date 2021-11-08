@@ -52,7 +52,7 @@ public class CACreatePlateformPourParcour : CustomActionScript {
 
 		yield return null;
 
-		suivreP.setPrecisionCalcul (.25f);
+		suivreP.setPrecisionCalcul (.05f);
 		emptyParent.SetActive(true);
 
 		yield return null;

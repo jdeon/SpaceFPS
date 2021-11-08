@@ -25,6 +25,7 @@ public class DeplacerAutourWithRigidB : MonoBehaviour {
 	void Start (){
 		this.actif = this.actifAuDebut;
 		objectRignidB = transform.GetComponent<Rigidbody> ();
+		objectRignidB.isKinematic = true;
 		Vector3 positionEnLocal = centre.InverseTransformPoint (transform.position);
 		if (coefOval.x != 0 && coefOval.y != 0) {
 			rayon = positionEnLocal.x / coefOval.x + positionEnLocal.z / coefOval.y;
@@ -46,7 +47,7 @@ public class DeplacerAutourWithRigidB : MonoBehaviour {
 			Vector3 positionEnWorld = centre.TransformPoint (positionEnLocal);
 
 			if (Time.deltaTime > 0) {
-				objectRignidB.velocity = (positionEnWorld - transform.position) / Time.deltaTime;
+				objectRignidB.MovePosition(positionEnWorld);
 			}
 
 			angle += degreeParSec * Time.deltaTime;

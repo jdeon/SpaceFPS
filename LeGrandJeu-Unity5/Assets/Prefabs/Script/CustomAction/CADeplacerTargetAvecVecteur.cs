@@ -7,11 +7,13 @@ public class CADeplacerTargetAvecVecteur : CustomActionScript {
 	public float tempsAller;
 	public bool isLoop = false;
 	public bool isDestinationLocal= true;
+	public float delaiUpdate;
 	
 	private Vector3 positionInitiale;
 	private bool isRetour;
 	private float vitesse;
 	private Vector3 destinationFinal;
+	private float timeLastUpdate;
 
 	public override void  Start(){
 		base.Start ();
@@ -30,6 +32,8 @@ public class CADeplacerTargetAvecVecteur : CustomActionScript {
 		float tempsRestant = tempsAller;
 		bool isFinie = false;
 
+		timeLastUpdate = Time.fixedTime;
+
 		while (!isFinie){
 			if (isLoop && !isRetour && tempsRestant > 0){
 				isRetour = true;
@@ -41,14 +45,22 @@ public class CADeplacerTargetAvecVecteur : CustomActionScript {
 				isFinie = true;
 			}
 
+			float t = Time.fixedTime - timeLastUpdate;
+
 			if(!isRetour){
-				transform.position = Vector3.MoveTowards (transform.position, destinationFinal, vitesse * Time.deltaTime);
+				transform.position = Vector3.MoveTowards (transform.position, destinationFinal, vitesse * t);
 			} else {
-				transform.position = Vector3.MoveTowards (transform.position, positionInitiale, vitesse * Time.deltaTime);
+				transform.position = Vector3.MoveTowards (transform.position, positionInitiale, vitesse * t);
 			}
 
-			tempsRestant -= Time.deltaTime;
-			yield return null;
+			tempsRestant -= t;
+			timeLastUpdate = Time.fixedTime;
+
+			if (delaiUpdate > 0) {
+				yield return new WaitForSeconds(delaiUpdate);
+			} else {
+				yield return null;
+			}
 		}
 		
 		yield return null;

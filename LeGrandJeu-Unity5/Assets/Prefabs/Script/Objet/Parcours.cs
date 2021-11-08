@@ -77,6 +77,11 @@ public class Parcours : MonoBehaviour {
 			etapeEnCours = 0;
 		}
 	}
+		
+	void OnDestroy()
+	{
+		Parcours.listDesParcours.Remove (this.nomParcour);
+	}
 
 
 	public bool isNotEmpty(){
@@ -157,7 +162,7 @@ public class Parcours : MonoBehaviour {
 	 * fait bouger la position de la transform en parametre en fonction du temps
 	 * REM : attention le cas du bouclage doit etre pris en compte dans le script qui l'utilise
 	 * */
-	public void parcourirEtape(Transform transformTarget, Rigidbody rigidbTarget, float tempsSurEtapeEnCours, int etapeEnCours, float delaiEntreCalcul){
+	public void parcourirEtape(Transform transformTarget, Rigidbody rigidbTarget, float tempsSurEtapeEnCours, int etapeEnCours){
 
 		if (isRotating){
 			appliquerRotation (tempsSurEtapeEnCours, transformTarget, etapeEnCours);
@@ -166,7 +171,7 @@ public class Parcours : MonoBehaviour {
 		if (this.modeDeParcours == "Force") {
 			parcourirAvecForce(tempsSurEtapeEnCours,transformTarget,rigidbTarget, etapeEnCours);
 		}else{
-			parcourirBezier(this.listEtape[etapeEnCours] , tempsSurEtapeEnCours, transformTarget, etapeEnCours, rigidbTarget, delaiEntreCalcul);
+			parcourirBezier(this.listEtape[etapeEnCours] , tempsSurEtapeEnCours, transformTarget, etapeEnCours, rigidbTarget);
 		}
 	}
 
@@ -527,7 +532,7 @@ public class Parcours : MonoBehaviour {
 		targetRigidBody.AddForce(targetTransform.forward*a,ForceMode.VelocityChange);
 	}
 
-	private void parcourirBezier(CourbeBezier courbeEtape, float tempsSurEtapeEnCours, Transform transformTarget, int numEtape, Rigidbody rigidTarget, float delaiEntreCalcul){
+	private void parcourirBezier(CourbeBezier courbeEtape, float tempsSurEtapeEnCours, Transform transformTarget, int numEtape, Rigidbody rigidTarget){
 		float proportion;
 
 		if (numEtape < this.listTempsPourProchaineEtape.Count && this.listTempsPourProchaineEtape [numEtape] != 0) {
@@ -536,19 +541,7 @@ public class Parcours : MonoBehaviour {
 
 			//Si la cible a un rigidbody on applique la force, sinon on la télétransporte
 			if (null != rigidTarget) {
-				/*
-				Vector3 direction = (pointDestination - transformTarget.position).normalized;
-				float vitesse = (pointDestination - transformTarget.position).magnitude / delaiEntreCalcul;
-
-				Vector3 ancienneVitesse = rigidTarget.velocity;
-
-				double nouvelleVitesse = ancienneVitesse.magnitude == 0 || vitesse < securiteIncrementationVitesse * rigidTarget.velocity.magnitude ? vitesse : 1.5 * rigidTarget.velocity.magnitude;
-
-				rigidTarget.velocity = direction * (float)nouvelleVitesse;
-				*/
-
 				rigidTarget.MovePosition (pointDestination);
-
 			} else {
 				transformTarget.position = pointDestination;
 			}
