@@ -17,7 +17,7 @@ public class PitchScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		var euler = _transform.localRotation.eulerAngles;
 
 		float newAngle = euler.x - Input.GetAxis("Mouse Y") * Time.deltaTime * _pitchSpeed;
