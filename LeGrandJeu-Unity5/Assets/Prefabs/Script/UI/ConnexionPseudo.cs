@@ -9,6 +9,9 @@ public class ConnexionPseudo : ConditionEventAbstract {
 	public Button boutonConnexion;
 	public Button boutonNvJoueur;
 
+	[SerializeField]
+	private string adminName;
+
 	private static int nivActuel;
 	private static int idCheckpointActuel;
 
@@ -25,11 +28,11 @@ public class ConnexionPseudo : ConditionEventAbstract {
 
 	public void connexionBouton(){
 		if(mainInputField.text != ""){
-			if (mainInputField.text == "SuperAdminKoala") {
+			if (mainInputField.text == adminName) {
 				nivActuel = 6;
 				idCheckpointActuel = 1;
-				PlayerPrefs.SetString ("SuperAdminKoala", GestionCheckpoint.mapActualCheckPointToText(6,1));
-				PlayerPrefs.SetString (Constantes.PP_JOUEUR_COURANT, "SuperAdminKoala");
+				PlayerPrefs.SetString (adminName, GestionCheckpoint.mapActualCheckPointToText(6,1));
+				PlayerPrefs.SetString (Constantes.PP_JOUEUR_COURANT, adminName);
 				this.isActive = true;
 			} else if (PlayerPrefs.HasKey (mainInputField.text)) {
 				string etapeActuel = PlayerPrefs.GetString (mainInputField.text); //format : lvl_???_checkP_???
