@@ -559,3 +559,96 @@ AssetImportParameters requested are different than current active one (requested
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 2349.364604 seconds.
+  path: Assets/MainMenu/LightingData.asset
+  artifactKey: Guid(da5c06067c05cb947bcfe9192da131a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MainMenu/LightingData.asset using Guid(da5c06067c05cb947bcfe9192da131a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b) Lighting data asset ‘LightingData’ is inconsistent because 5 files out of 24 are missing.  Please use Generate Lighting to rebuild the lighting data.
+
+Lighting data asset ‘LightingData’ is incompatible with the current Unity version. Please use Generate Lighting to rebuild the lighting data.  Realtime Global Illumination cannot be used until the lighting data is rebuilt.
+
+ -> (artifact id: '3797407dacef357e5b3cb8639e735130') in 0.152408 seconds 
+  Import took 0.157873 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000261 seconds.
+  path: Assets/MainMenu/Lightmap-1_comp_dir.png
+  artifactKey: Guid(7064c2668aa50e144baa611555388a36) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MainMenu/Lightmap-1_comp_dir.png using Guid(7064c2668aa50e144baa611555388a36) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '79a727199539a9f05843f7ba8e4e213e') in 0.108352 seconds 
+  Import took 0.112366 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000237 seconds.
+  path: Assets/MainMenu/Lightmap-2_comp_dir.png
+  artifactKey: Guid(314ec90fac5b8f542ae5bf82e3da3565) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MainMenu/Lightmap-2_comp_dir.png using Guid(314ec90fac5b8f542ae5bf82e3da3565) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d454cd4318a1a98cb02ed2080d06879') in 0.033345 seconds 
+  Import took 0.037634 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000320 seconds.
+  path: Assets/MainMenu/Lightmap-1_comp_light.exr
+  artifactKey: Guid(bdd0f9da81fa4194dbbb66600da6cc7b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MainMenu/Lightmap-1_comp_light.exr using Guid(bdd0f9da81fa4194dbbb66600da6cc7b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e62b90288be6beb89a6bd4ce6e0d3c47') in 0.058570 seconds 
+  Import took 0.063157 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000272 seconds.
+  path: Assets/MainMenu/Lightmap-0_comp_dir.png
+  artifactKey: Guid(168b6060e5c54774fa985bbb07db2312) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MainMenu/Lightmap-0_comp_dir.png using Guid(168b6060e5c54774fa985bbb07db2312) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f2d489e0814755cbc42ac91849bb23bf') in 0.029992 seconds 
+  Import took 0.034317 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000282 seconds.
+  path: Assets/MainMenu/Lightmap-2_comp_light.exr
+  artifactKey: Guid(74cbb66ec0cede74d8a179b65d2c90c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MainMenu/Lightmap-2_comp_light.exr using Guid(74cbb66ec0cede74d8a179b65d2c90c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b1b5c0838dbc49677dda4dda8ecf5722') in 0.035671 seconds 
+  Import took 0.040064 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000275 seconds.
+  path: Assets/MainMenu/Lightmap-0_comp_light.exr
+  artifactKey: Guid(3c80e36b24f451140b19c018250d4f95) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MainMenu/Lightmap-0_comp_light.exr using Guid(3c80e36b24f451140b19c018250d4f95) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '49c5ba8414fc2615eaef985c22744fda') in 0.035338 seconds 
+  Import took 0.039820 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 8.276333 seconds.
+  path: Assets/Prefabs/ControllerOCRAmeliore.prefab
+  artifactKey: Guid(13d9c37bf5b4aa54892dc0aa9ca2d8b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/ControllerOCRAmeliore.prefab using Guid(13d9c37bf5b4aa54892dc0aa9ca2d8b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8725f652a3a7c0f7b1c30f62371098db') in 0.033486 seconds 
+  Import took 0.040477 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000235 seconds.
+  path: Assets/Prefabs/Cube.prefab
+  artifactKey: Guid(83640f5fe4fb51041b51a02fef2292f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/Cube.prefab using Guid(83640f5fe4fb51041b51a02fef2292f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '14333517c45e8d70b05e175433a8d906') in 0.058452 seconds 
+  Import took 0.062292 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 6.216467 seconds.
+  path: Assets/Prefabs/Materials
+  artifactKey: Guid(5d5d921770c25ad43aebe14f0bf0c407) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/Materials using Guid(5d5d921770c25ad43aebe14f0bf0c407) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'afa4f6c7ea367ad2e717b6e820968183') in 0.006139 seconds 
+  Import took 0.009981 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001455 seconds.
+  path: Assets/Prefabs/Materials
+  artifactKey: Guid(5d5d921770c25ad43aebe14f0bf0c407) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/Materials using Guid(5d5d921770c25ad43aebe14f0bf0c407) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'afa4f6c7ea367ad2e717b6e820968183') in 0.005409 seconds 
+  Import took 0.009145 seconds .
+
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
