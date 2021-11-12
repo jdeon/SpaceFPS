@@ -1,68 +1,158 @@
 fileFormatVersion: 2
 guid: f7d281698f17223488971130c1ddc5e1
 ModelImporter:
-  serializedVersion: 19
-  fileIDToRecycleName:
-    100000: ComplemenTour
-    100002: Entree
-    100004: PorteDroite
-    100006: PorteGauche
-    100008: Tour
-    100010: //RootNode
-    100012: TubeAscenseur
-    400000: ComplemenTour
-    400002: Entree
-    400004: PorteDroite
-    400006: PorteGauche
-    400008: Tour
-    400010: //RootNode
-    400012: TubeAscenseur
-    2300000: ComplemenTour
-    2300002: Entree
-    2300004: PorteDroite
-    2300006: PorteGauche
-    2300008: Tour
-    2300010: TubeAscenseur
-    3300000: ComplemenTour
-    3300002: Entree
-    3300004: PorteDroite
-    3300006: PorteGauche
-    3300008: Tour
-    3300010: TubeAscenseur
-    4300000: PorteDroite
-    4300002: PorteGauche
-    4300004: ComplemenTour
-    4300006: Entree
-    4300008: TubeAscenseur
-    4300010: Tour
-    6400000: ComplemenTour
-    6400002: Entree
-    6400004: PorteDroite
-    6400006: PorteGauche
-    6400008: Tour
-    6400010: TubeAscenseur
-    7400000: Default Take
-    9500000: //RootNode
+  serializedVersion: 20200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: ComplemenTour
+  - first:
+      1: 100002
+    second: Entree
+  - first:
+      1: 100004
+    second: PorteDroite
+  - first:
+      1: 100006
+    second: PorteGauche
+  - first:
+      1: 100008
+    second: Tour
+  - first:
+      1: 100010
+    second: //RootNode
+  - first:
+      1: 100012
+    second: TubeAscenseur
+  - first:
+      4: 400000
+    second: ComplemenTour
+  - first:
+      4: 400002
+    second: Entree
+  - first:
+      4: 400004
+    second: PorteDroite
+  - first:
+      4: 400006
+    second: PorteGauche
+  - first:
+      4: 400008
+    second: Tour
+  - first:
+      4: 400010
+    second: //RootNode
+  - first:
+      4: 400012
+    second: TubeAscenseur
+  - first:
+      23: 2300000
+    second: ComplemenTour
+  - first:
+      23: 2300002
+    second: Entree
+  - first:
+      23: 2300004
+    second: PorteDroite
+  - first:
+      23: 2300006
+    second: PorteGauche
+  - first:
+      23: 2300008
+    second: Tour
+  - first:
+      23: 2300010
+    second: TubeAscenseur
+  - first:
+      33: 3300000
+    second: ComplemenTour
+  - first:
+      33: 3300002
+    second: Entree
+  - first:
+      33: 3300004
+    second: PorteDroite
+  - first:
+      33: 3300006
+    second: PorteGauche
+  - first:
+      33: 3300008
+    second: Tour
+  - first:
+      33: 3300010
+    second: TubeAscenseur
+  - first:
+      43: 4300000
+    second: PorteDroite
+  - first:
+      43: 4300002
+    second: PorteGauche
+  - first:
+      43: 4300004
+    second: ComplemenTour
+  - first:
+      43: 4300006
+    second: Entree
+  - first:
+      43: 4300008
+    second: TubeAscenseur
+  - first:
+      43: 4300010
+    second: Tour
+  - first:
+      64: 6400000
+    second: ComplemenTour
+  - first:
+      64: 6400002
+    second: Entree
+  - first:
+      64: 6400004
+    second: PorteDroite
+  - first:
+      64: 6400006
+    second: PorteGauche
+  - first:
+      64: 6400008
+    second: Tour
+  - first:
+      64: 6400010
+    second: TubeAscenseur
+  - first:
+      74: 7400000
+    second: Default Take
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      74: -623603649343465320
+    second: Scene
+  externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -70,26 +160,45 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 1
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 1
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -99,14 +208,17 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
