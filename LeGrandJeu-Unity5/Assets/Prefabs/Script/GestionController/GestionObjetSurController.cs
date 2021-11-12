@@ -22,7 +22,7 @@ public class GestionObjetSurController : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Input.GetMouseButtonDown (2) && transform.Find(Constantes.STR_HEAD_CONTROLLER).Find(Constantes.STR_TRANSFORM_ARME).childCount > 0) {
+		if (Input.GetMouseButtonDown (1) && transform.Find(Constantes.STR_HEAD_CONTROLLER).Find(Constantes.STR_TRANSFORM_ARME).childCount > 0) {
 			Transform transfHeadController = transform.Find(Constantes.STR_HEAD_CONTROLLER);
 			Transform transfArme = transfHeadController.Find(Constantes.STR_TRANSFORM_ARME).GetChild(0);
 			if(!isModeVisee){

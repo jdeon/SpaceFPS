@@ -27,6 +27,11 @@ public class CAChangementDeReference : CustomActionScript {
 			yield return new WaitForSeconds (0.01f);
 		}
 
+		if (speedRotate > 0) {
+			transform.rotation = to.rotation;
+		}
+		transform.position = to.position;
+
 		if (changerParent) {
 			transform.SetParent(to);
 		}

@@ -5,6 +5,7 @@ public class TeteChercheuseInertie : MonoBehaviour {
 
 	public Transform targetTransform;
 	public float force;
+	public float maxVelocity;
 
 	public ForceMode _forceMode = ForceMode.VelocityChange;
 
@@ -13,12 +14,12 @@ public class TeteChercheuseInertie : MonoBehaviour {
 	public int delayAutoDestrucSiCondFaux;
 	public GameObject animDestruct;
 
-	private Rigidbody TargetRigidbody;
+	private Rigidbody targetRigidbody;
 	private float delayAvantAutoDestruct;
 
 	void Start() 
 	{
-		TargetRigidbody = GetComponent<Rigidbody>();
+		targetRigidbody = GetComponent<Rigidbody>();
 		delayAvantAutoDestruct = (float) delayAutoDestrucSiCondFaux;
 		if (null != animDestruct) {
 			animDestruct.SetActive (false);
@@ -27,9 +28,13 @@ public class TeteChercheuseInertie : MonoBehaviour {
 
 	void Update () 
 	{
+		if (maxVelocity > 0 && targetRigidbody.velocity.magnitude > maxVelocity) {
+			targetRigidbody.velocity = targetRigidbody.velocity * maxVelocity / targetRigidbody.velocity.magnitude;
+		}
+
 		if(null == conditonRecher || conditonRecher.getIsActive()){
 			transform.LookAt (targetTransform);
-			TargetRigidbody.AddForce(transform.forward*force*Time.deltaTime,_forceMode );
+			targetRigidbody.AddForce(transform.forward*force*Time.deltaTime,_forceMode );
 			delayAvantAutoDestruct = (float) delayAutoDestrucSiCondFaux;
 		} else if (autoDestruct){
 			delayAvantAutoDestruct -= Time.deltaTime;
@@ -42,11 +47,15 @@ public class TeteChercheuseInertie : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision)
 	{
-		if(collision.transform == targetTransform){
-			//blesse
-		}
-
 		destructionProjectile ();
+	}
+
+	public void OnTriggerEnter(Collider other)
+	{
+		if(other.gameObject.layer == Constantes.LAYER_CONTROLLER)
+		{
+			destructionProjectile ();
+		} 
 	}
 
 

@@ -17,24 +17,34 @@ public class suivreParcour : MonoBehaviour, IActivable {
 	private float tempsParcours = 0;
 	private bool isRetour = false;
 	private bool isFini = false;
-    private Rigidbody objectRigidbody;
-    private Vector3 directionDebut;
+	private Rigidbody objectRigidbody;
+	private Vector3 directionDebut;
 	private bool isBeforeStart;
 	private float precisionCalcul;
+	private float precisionCalculInit;
+	private float timeLastUpdate;
 
 	void Awake(){
 		isBeforeStart = true;
 	}
 
 
-    // Use this for initialization
-    void Start () {
+	// Use this for initialization
+	void Start () {
 		t = 0;
-		precisionCalcul = .1f;
+		enabled = false;//limit les updates non necessaires
+		timeLastUpdate = Time.fixedTime;
+
+		if (modeCinematique) {
+			setPrecisionCalcul(Time.deltaTime);
+		} else if (precisionCalcul <= 0f) {
+			setPrecisionCalcul(.02f);
+		}
+
 		if (object.Equals(Parcours.listDesParcours, null) || ! Parcours.listDesParcours.ContainsKey (parcours.nomParcour)) {
 			parcours.initialisationParcours ();
 		}
-        this.parcours.IsInPlay = true;
+		this.parcours.IsInPlay = true;
 		this.etapeEnCours = 0;
 		for (int i = 0; i < parcours.listTempsPourProchaineEtape.Count-1; i++) {
 			tempsParcours += parcours.listTempsPourProchaineEtape [i];
@@ -46,12 +56,13 @@ public class suivreParcour : MonoBehaviour, IActivable {
 	}
 
 	void Update(){
-		if (isFini){
+		if (this.isFini){
 			if (isDestroyAtEnd) {
 				Destroy (gameObject, delayToDestroy);
 			} else if (null != objectRigidbody) {
 				objectRigidbody.velocity = Vector3.zero;
 				objectRigidbody.isKinematic = true;
+				enabled = false;
 			}
 		}
 	}
@@ -78,41 +89,76 @@ public class suivreParcour : MonoBehaviour, IActivable {
 	}
 
 	private void preparerLancementCoroutine(){
-		positionDepart = transform;
+		this.positionDepart = transform;
 		this.objectRigidbody = gameObject.GetComponent<Rigidbody>();
 		if (null != objectRigidbody){
-			this.objectRigidbody.isKinematic = false;
+			this.objectRigidbody.isKinematic = true;
+			this.objectRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 		}
 		this.directionDebut = (this.parcours.listEtapeTransform[0].position - this.transform.position).normalized;
-		vitesseDebut = this.parcours.listTempsPourProchaineEtape [0] > 0 ? vitesseRelative * Vector3.Distance(this.parcours.listEtapeTransform [0].position, positionDepart.position) / parcours.listTempsPourProchaineEtape [0] : 0;
+		this.vitesseDebut = this.parcours.listTempsPourProchaineEtape [0] > 0 ? vitesseRelative * Vector3.Distance(this.parcours.listEtapeTransform [0].position, positionDepart.position) / parcours.listTempsPourProchaineEtape [0] : 0;
+		this.timeLastUpdate = Time.fixedTime;
+
 		StartCoroutine ("suivreLeParvours");
 	}
 
 	// FixedUpdate is called once per fixed deltatime
-	private IEnumerator suivreLeParvours () {
-		while(!this.isFini && this.actif) {
-			if (modeCinematique) {
-				precisionCalcul = Time.deltaTime;
-			}
+	void FixedUpdate(){
+		if(!this.isFini && this.actif && isRigidbodyLogic ()) {
+			precisionCalcul = Time.fixedTime - timeLastUpdate;
+
 			if (this.etapeEnCours == 0) {
 				allerVersDebutParcours ();
 			} else {
 				suivreParcours ();
 			}
+			timeLastUpdate = Time.fixedTime;
+		}
+	}
+
+
+	private IEnumerator suivreLeParvours () {
+		while(!this.isFini && this.actif) {
+			if (isRigidbodyLogic ()) {
+				enabled = true; //reactivation pour fixedupdates
+				yield return new WaitForFixedUpdate();
+				continue;
+			}
+
+			enabled = false; //desactivation des updates pour les coroutines
+
+			precisionCalcul = Time.fixedTime - timeLastUpdate;
+
+			if (this.etapeEnCours == 0) {
+				allerVersDebutParcours ();
+			} else {
+				suivreParcours ();
+			}
+
+			timeLastUpdate = Time.fixedTime;
 			if (modeCinematique) {
 				yield return null;
 			} else {
-				yield return new WaitForSeconds (precisionCalcul);
+				yield return new WaitForSeconds (precisionCalculInit);
 			}
 		}
+			
+		enabled = true; //reactivation des updates car fin de la coroutine
+
 		yield return null;
+	}
+
+
+	private bool isRigidbodyLogic(){
+		Rigidbody rigidB = GetComponent<Rigidbody>();
+		return null != rigidB;// && !rigidB.isKinematic;
 	}
 
 
 	void allerVersDebutParcours(){
 		//
-		if (vitesseDebut > 0 && null != this.objectRigidbody) {
-			this.objectRigidbody.velocity = directionDebut * this.vitesseDebut;
+		if (this.vitesseDebut > 0 && null != this.objectRigidbody) {
+			this.objectRigidbody.MovePosition(this.objectRigidbody.position + directionDebut * this.vitesseDebut * precisionCalcul);
 		} else if (parcours.listTempsPourProchaineEtape [0] > 0){
 			transform.position = Vector3.Lerp (positionDepart.position, parcours.listEtapeTransform [0].position, t / parcours.listTempsPourProchaineEtape [0]);
 		} else {
@@ -137,7 +183,7 @@ public class suivreParcour : MonoBehaviour, IActivable {
 				tempsSurEtapeEnCours -= parcours.listTempsPourProchaineEtape [i];
 			}
 		}
-		
+
 		//Si le temps de l'étape est dépassé, on change d'étape sinon on bouge le point
 		if (this.etapeEnCours < parcours.listTempsPourProchaineEtape.Count && tempsSurEtapeEnCours >= parcours.listTempsPourProchaineEtape [this.etapeEnCours]) {
 			tempsSurEtapeEnCours -= parcours.listTempsPourProchaineEtape [this.etapeEnCours];
@@ -153,10 +199,10 @@ public class suivreParcour : MonoBehaviour, IActivable {
 
 		case "AllerSimple":
 			if (this.etapeEnCours < parcours.getNbEtape()){
-				parcours.parcourirEtape (transform, GetComponent<Rigidbody>(), tempsSurEtapeEnCours,this.etapeEnCours, precisionCalcul);
+				parcours.parcourirEtape (transform, GetComponent<Rigidbody>(), tempsSurEtapeEnCours,this.etapeEnCours);
 				t += vitesseRelative * precisionCalcul;
 			} else {
-				isFini = true;
+				this.isFini = true;
 			}
 			break;
 
@@ -171,7 +217,7 @@ public class suivreParcour : MonoBehaviour, IActivable {
 				isRetour=false; 
 			}
 
-			parcours.parcourirEtape (transform, GetComponent<Rigidbody>(), tempsSurEtapeEnCours, this.etapeEnCours, precisionCalcul);
+			parcours.parcourirEtape (transform, GetComponent<Rigidbody>(), tempsSurEtapeEnCours, this.etapeEnCours);
 
 			if (!isRetour){
 				t += vitesseRelative * precisionCalcul;
@@ -182,7 +228,7 @@ public class suivreParcour : MonoBehaviour, IActivable {
 
 		case "BoucleTeleport":
 			if (this.etapeEnCours < parcours.getNbEtape()){
-				parcours.parcourirEtape (transform, GetComponent<Rigidbody>(), tempsSurEtapeEnCours, this.etapeEnCours, precisionCalcul);
+				parcours.parcourirEtape (transform, GetComponent<Rigidbody>(), tempsSurEtapeEnCours, this.etapeEnCours);
 				t += vitesseRelative * precisionCalcul;
 			} else {
 				this.etapeEnCours = 1;
@@ -192,25 +238,13 @@ public class suivreParcour : MonoBehaviour, IActivable {
 
 		case "Boucle": 
 			if (this.etapeEnCours < parcours.getNbEtape()){
-				parcours.parcourirEtape (transform, GetComponent<Rigidbody>(), tempsSurEtapeEnCours, this.etapeEnCours,precisionCalcul);
+				parcours.parcourirEtape (transform, GetComponent<Rigidbody>(), tempsSurEtapeEnCours, this.etapeEnCours);
 				t += vitesseRelative * precisionCalcul;
 			} else {
 				this.etapeEnCours = 1;
 				t = parcours.listTempsPourProchaineEtape[0];
 			}
 			break;
-		}
-	}
-	
-
-	void suivreBoucle(){
-		if (t <= tempsParcours) {
-			parcours.parcourirEtape (transform, GetComponent<Rigidbody>(), t, this.etapeEnCours,precisionCalcul);
-			t += vitesseRelative * precisionCalcul;
-		} else if (t <= tempsParcours + parcours.listTempsPourProchaineEtape[0]){
-
-
-
 		}
 	}
 
@@ -220,5 +254,6 @@ public class suivreParcour : MonoBehaviour, IActivable {
 
 	public void setPrecisionCalcul(float precisionCalcul){
 		this.precisionCalcul = precisionCalcul;
+		this.precisionCalculInit = precisionCalcul;
 	}
 }

@@ -11,6 +11,7 @@ public class ArmePistolet : ArmeAFeuAbstract {
 		sphere.transform.position = transform.position;
 		sphere.transform.rotation = transform.rotation;
 		sphere.transform.localScale = new Vector3 (0.005f, 0.005f, 0.01f);
+		sphere.GetComponent<SphereCollider> ().radius = 1f;
 		sphere.AddComponent<Rigidbody>().mass = .01f;
 		sphere.GetComponent<Rigidbody>().useGravity = false;
 		sphere.layer = Constantes.LAYER_PROJECTILE;

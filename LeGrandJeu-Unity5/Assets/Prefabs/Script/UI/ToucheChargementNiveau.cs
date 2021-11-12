@@ -29,7 +29,7 @@ public class ToucheChargementNiveau : MonoBehaviour {
 
 	public void clickBouttonNiv(int numNiv) {
 		if (numNiv <= ConnexionPseudo.getNivActuel ()) {
-			PlayerPrefs.SetString (PlayerPrefs.GetString(Constantes.PP_JOUEUR_COURANT), Constantes.PP_LEVEL + "_" + ConnexionPseudo.getNivActuel () + "_" + Constantes.PP_CHECKPOINT + "_1");
+			PlayerPrefs.SetString (PlayerPrefs.GetString(Constantes.PP_JOUEUR_COURANT), GestionCheckpoint.mapActualCheckPointToText(ConnexionPseudo.getNivActuel (),1));
 			chargerNiveau(numNiv);
 		}
 	}

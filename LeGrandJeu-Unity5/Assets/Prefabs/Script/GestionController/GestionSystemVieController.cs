@@ -67,7 +67,7 @@ public class GestionSystemVieController : MonoBehaviour , ISystemVie {
 		if (null == this.armure || this.armure.isBrisee () || this.armure.protectionMax <= pointDArmure) {
 			this.armure = new Armure (pointDArmure, transformVisuel, listCouleurPV);
 		} else {
-			this.armure.regeneration (pointDArmure);
+			this.armure.amelioration (pointDArmure);
 		}
 	}
 

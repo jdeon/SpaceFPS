@@ -11,17 +11,10 @@ public class CASpawnedEnnemieTeleportInZone : CASpawnedPrefabInZone {
 	//défini si l'on peut passer dans tout le box collider ou uniquement le centre
 	public bool useColliderForPassage;
 	public List<GameObject> listPassage;
-
-	private float timeLimit =5;
 	
 	public override IEnumerator DoActionOnEvent (MonoBehaviour sender, GameObject args)
 	{	
-		float timeRetant = timeLimit;
-		StartCoroutine(base.DoActionOnEvent (sender, args));
-		while (instanciateObject == null && timeRetant>0) {
-			yield return new WaitForFixedUpdate();
-			timeRetant -= Time.deltaTime;
-		}
+		yield return StartCoroutine(base.DoActionOnEvent (sender, args));
 
 		if (instanciateObject != null) {
 			TeleportEnemyTueur teleportScript = instanciateObject.GetComponent<TeleportEnemyTueur> ();

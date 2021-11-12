@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ZoneGraviteModifier : MonoBehaviour {
 
+	private static readonly float TIME_PER_PROCESSING = 0.05f;
+
 	public Transform rotateTransform;
 	public float tempDeRotation;
 	public bool desactivateGravite;
@@ -12,11 +14,14 @@ public class ZoneGraviteModifier : MonoBehaviour {
 	private List<Rigidbody> listRigidBodyInterieurZone;
 	private List<Transform> listTransformReference;
 
+	private bool rotationEnCours;
+
 
 	// Use this for initialization
 	void Start () {
 		listRigidBodyInterieurZone = new List<Rigidbody> ();
 		listTransformReference = new List<Transform> ();
+		rotationEnCours = false;
 	}
 
 	void Update(){
@@ -44,27 +49,36 @@ public class ZoneGraviteModifier : MonoBehaviour {
 				rigidOther.useGravity = false;
 			}
 
-			//Simplifier avec la création d'un parent
-			//Quaternion destinationRotation = adaptationDirectionVue (rigidOther.transform);
-			float angleYDestination;
-			if (null != transform.parent){
-				angleYDestination = other.transform.localRotation.eulerAngles.y;
-			} else {//SI pas de parent on utilisera la direction de deplacement comme référence
-				angleYDestination = Vector3.Angle(other.transform.forward,new Vector3(rigidOther.velocity.x,0,rigidOther.velocity.z));
+			//Le but est de coincider les direction de l'objet et de l'other
+			float deltaAngle;
+			Vector3 pivotRotation;
+			float timeToRotate = this.tempDeRotation;
+			bool isOppose = Vector3.Dot (other.transform.up, transform.up) < -0.25f;
+
+
+			if (isOppose) {
+				//opposingWait = true;
+				//Si les deux vecteur haut sont opposé, on fait la rotation avec l'opposé et on tourne de 180 dans le sens de la direction
+				pivotRotation = Vector3.Cross(other.transform.up, -1f * transform.up);
+				deltaAngle = Vector3.Angle(-1f * transform.up, other.transform.up);
+
+				if (!Vector3.zero.Equals (pivotRotation)) {
+					//Deux rotation a prévoir;
+					timeToRotate = this.tempDeRotation / 2;
+				}
+
+				StartCoroutine(rotateToWall(rigidOther,other.transform.forward, 180f, timeToRotate, Space.World));
+
+			} else {
+				pivotRotation = Vector3.Cross(other.transform.up, transform.up);
+				deltaAngle = Vector3.Angle(transform.up, other.transform.up);
 			}
 
-			other.transform.SetParent (null);
-			other.transform.localScale = Vector3.one;
 
+			StartCoroutine(rotateToWall(rigidOther, pivotRotation, deltaAngle, timeToRotate, Space.World));
 			if (!isReinitialisate) {
-				GameObject goReference = new GameObject ("ReferenceRotation_" + this.gameObject.name);
-				goReference.transform.rotation = rotateTransform.rotation;
-				listTransformReference.Add (goReference.transform);
-				other.transform.SetParent (goReference.transform);
-			} 
-
-			StartCoroutine(rotateToWall(rigidOther, angleYDestination));
-			StartCoroutine(applyNewGravity(rigidOther));
+				StartCoroutine (applyNewGravity (rigidOther));
+			}
 		}
 	}
 
@@ -72,43 +86,35 @@ public class ZoneGraviteModifier : MonoBehaviour {
 		Rigidbody rigidOther = other.gameObject.GetComponent<Rigidbody> ();
 		if (null != rigidOther && listRigidBodyInterieurZone.Contains (rigidOther)) {
 			listRigidBodyInterieurZone.Remove (rigidOther);
-			if (desactivateGravite) {
-				rigidOther.useGravity = true;
-			}
+			rigidOther.useGravity = true;
 		}
 	}
 
-	private Quaternion adaptationDirectionVue(Transform transformToModified){
-		Vector3 otherEuler = transformToModified.localRotation.eulerAngles;
-		//Vector3 transformModifiedEuler = rotateTransform.localRotation.eulerAngles;
+	private IEnumerator rotateToWall(Rigidbody rigidOther, Vector3 pivot, float deltaAngle, float timeToRotate, Space spaceRef) {
+		float angleRestant = deltaAngle;
 
-		GameObject go = new GameObject ("adaptationDirectionVue");
-		go.transform.SetParent (rotateTransform.parent);
-		go.transform.localPosition = Vector3.zero;
-		go.transform.localRotation = Quaternion.Euler(0 , otherEuler.y +90 , 0);
-
-		Quaternion rotationTarget = go.transform.rotation;
-		GameObject.Destroy (go);
-		return	rotationTarget;
-	}
-
-	private IEnumerator rotateToWall(Rigidbody rigidOther, float angleDst) {
-		Quaternion orgRot = rigidOther.transform.localRotation;
-		Quaternion dstRot = Quaternion.Euler (0, angleDst, 0);
-		for (float t = 0.0f; t < tempDeRotation; t += Time.deltaTime){
-			if (null != rigidOther && listRigidBodyInterieurZone.Contains (rigidOther)) {
-				rigidOther.transform.localRotation = Quaternion.Slerp(orgRot, dstRot, t/tempDeRotation);
-
-				//UtilsObjet.setWorldScale (rigidOther.transform, Vector3.one);
-				yield return null; // return here next frame
-			}
+		while (this.rotationEnCours) {
+			yield return null;
 		}
 
-		rigidOther.transform.localRotation = dstRot;
+		this.rotationEnCours = true;
+
+		do{
+			float deltaFrameAngle = deltaAngle*Time.deltaTime/timeToRotate;
+			deltaFrameAngle = Mathf.Min(angleRestant,deltaFrameAngle); //Au cas où le deltaTime est trop grand
+			rigidOther.transform.Rotate (pivot, deltaFrameAngle, spaceRef);
+			angleRestant -= deltaFrameAngle;
+			yield return null; // return here next frame
+		} while (angleRestant > 0 && null != rigidOther && listRigidBodyInterieurZone.Contains (rigidOther));
+
+		this.rotationEnCours = false;
 	}
 
 	private IEnumerator applyNewGravity(Rigidbody rigidOther){
 		while (null != rigidOther && listRigidBodyInterieurZone.Contains (rigidOther)) {
+			if (desactivateGravite) {
+				rigidOther.useGravity = false;
+			}
 			rigidOther.AddForce (-10f * rotateTransform.up.normalized * Time.deltaTime, ForceMode.VelocityChange);
 			yield return null; // return here next frame
 		}
