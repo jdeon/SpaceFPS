@@ -1,6 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+/**
+ * Ojectif du script
+ * faire un retrait avant la rotation de time * proportion
+ * acceleraration durant time * (1-2proportion) /4
+ * vitesse stable durant durant time * (1-2proportion) /2
+ * deceleration durant time * (1-2proportion) /4
+ * faire un retrait avant la rotation de time * proportion
+ */
 public class RotateSamplePingPong : MonoBehaviour
 {	
 	public float time;
@@ -11,9 +19,13 @@ public class RotateSamplePingPong : MonoBehaviour
 	public float portionTempsRetrait;
 
 	private Rigidbody rigidB;
-	private float timeDuring;
 	private float timeRotationPrincipal;
 	private Dictionary<float, float> accelerationByTime;
+	private Quaternion rotationOriginal;
+	private bool isRetour;
+
+	private float vitesseActuel;
+	private float tempsActuel;
 
 	void Start()
 	{
@@ -22,6 +34,16 @@ public class RotateSamplePingPong : MonoBehaviour
 		Debug.Log(gameObject.name + " utilise RotateSamplePingPong");
 
 		rigidB = GetComponent<Rigidbody>();
+		if(null != rigidB)
+        {
+			rigidB.isKinematic = true;
+			Quaternion rotation = rigidB.rotation;
+			rotationOriginal = new Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+		} else
+        {
+			Quaternion rotation = transform.rotation;
+			rotationOriginal = new Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+		}
 
 		float accelerationRetrait = 0;
 		float accelerationRotation = 0;
@@ -32,27 +54,67 @@ public class RotateSamplePingPong : MonoBehaviour
 		//R = a*t*t/2 => 2R/(t*t)
 		if (time > 0) {
 			//Retrait : R = portionRetrait * angle(Radian) ; t = TempsRetrait / temps total
-			accelerationRetrait = 2 * (portionRetrait* AngleEnFraction * 2 * Mathf.PI) / Mathf.Pow(timeRotationPrincipal * portionTempsRetrait / time, 2);
+			//R = aTT/2 => a = 2R/TT
+			accelerationRetrait = 2 * (portionRetrait* AngleEnFraction * 360) / Mathf.Pow(timeRotationPrincipal * portionTempsRetrait, 2);
 
-			//Retrait : R = portionRetrait * angle(Radian) ; t = TempsRetr
-			accelerationRotation = 2 * AngleEnFraction * 2 * Mathf.PI / Mathf.Pow(timeRotationPrincipal / time, 2);
+			//1/2a*t1*t1 =R/4 et v*t2 = R/2 => a*t1*t1 = v*t2 = a*t1*t2 => t1=t2 avec 2*t1 + t2 = T => t1=T/3
+			//a =R/(2*t1*t1) = R/(2*(T/3)*(T/3) = 9R/2T
+			accelerationRotation = 9 * AngleEnFraction * (1+2*portionRetrait) * 360 / (2*Mathf.Pow(timeRotationPrincipal, 2));
 		}
 
 		initAccelerationByTime(accelerationRetrait, accelerationRotation);
 
-		timeDuring = 0;
+		tempsActuel = 0;
+		vitesseActuel = 0;
+		isRetour = false;
 	}
 
     private void FixedUpdate()
     {
-		float accelerationActuel = getAcceleration(timeDuring);
-		rigidB.AddRelativeTorque(accelerationActuel*Time.deltaTime, 0, 0, ForceMode.VelocityChange);
+		float accelerationActuel = getAcceleration(tempsActuel);
 
-		timeDuring += Time.deltaTime;
+		float t = Time.fixedDeltaTime; 
+		float rotationActuel = accelerationActuel * Mathf.Pow(t, 2)/2 + vitesseActuel * t;
 
-		if(timeDuring > time + Delay)
+		if(null != rigidB)
         {
-			timeDuring = 0;
+			rigidB.MoveRotation(rigidB.rotation * Quaternion.Euler(rotationActuel, 0, 0));
+        } else
+        {
+			transform.Rotate(rotationActuel, 0, 0, Space.Self);
+        }
+
+
+		vitesseActuel += accelerationActuel * t;
+		tempsActuel += t;
+
+		if (tempsActuel > time + Delay)
+		{
+			vitesseActuel = 0;
+			Quaternion destination;
+            if (isRetour)
+            {
+				destination = rotationOriginal;
+			} 
+			else
+            {
+				destination = rotationOriginal * Quaternion.Euler(AngleEnFraction * 360, 0, 0);
+			}
+
+			if (null != rigidB)
+			{
+				rigidB.MoveRotation(destination);
+			}
+			else
+			{
+				transform.rotation = destination;
+			}
+		}
+
+		if (tempsActuel > time + Delay)
+        {
+			tempsActuel = 0;
+			isRetour = !isRetour;
         }
 	}
 
@@ -65,12 +127,14 @@ public class RotateSamplePingPong : MonoBehaviour
 			accelerationByTime.Add(timeRotationPrincipal * portionTempsRetrait, -accelerationRetrait);
 		}
 
-		accelerationByTime.Add(time/2, accelerationRotation);
-		accelerationByTime.Add(time - timeRotationPrincipal * portionTempsRetrait, -accelerationRetrait);
+		//Si t1=t2 alors le rotation est séparé en 3 tiers acceleration, constant ralentissement
+		accelerationByTime.Add(timeRotationPrincipal * (portionTempsRetrait + 1f/3f), accelerationRotation);
+		accelerationByTime.Add(timeRotationPrincipal * (portionTempsRetrait + 2f/3f), 0);
+		accelerationByTime.Add(time - timeRotationPrincipal * portionTempsRetrait, -accelerationRotation);
 
 		if (portionTempsRetrait > 0)
 		{
-			accelerationByTime.Add(time, accelerationRetrait);
+			accelerationByTime.Add(time, -accelerationRetrait);
 		}
 	}
 
@@ -87,6 +151,11 @@ public class RotateSamplePingPong : MonoBehaviour
 
 			acceleration = item.Value;
 			break;
+		}
+
+		if (isRetour)
+		{
+			acceleration = -1f * acceleration;
 		}
 
 		return acceleration;
