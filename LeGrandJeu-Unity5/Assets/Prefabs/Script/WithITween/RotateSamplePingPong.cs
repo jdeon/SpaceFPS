@@ -51,15 +51,16 @@ public class RotateSamplePingPong : MonoBehaviour
 		//Ttotal = timeRotationPrincipal (1 + 2 * portionTempsRetrait) = time
 		timeRotationPrincipal = time / (1 + 2 * portionTempsRetrait);
 
-		//R = a*t*t/2 => 2R/(t*t)
+		//r = a*t*t/2 => 2R/(t*t) avec R = r/2 et T = t/2
 		if (time > 0) {
 			//Retrait : R = portionRetrait * angle(Radian) ; t = TempsRetrait / temps total
 			//R = aTT/2 => a = 2R/TT
-			accelerationRetrait = 2 * (portionRetrait* AngleEnFraction * 360) / Mathf.Pow(timeRotationPrincipal * portionTempsRetrait, 2);
+			accelerationRetrait = 2 * (portionRetrait* AngleEnFraction * 360 / 2) / Mathf.Pow(timeRotationPrincipal * portionTempsRetrait / 2, 2);
 
 			//1/2a*t1*t1 =R/4 et v*t2 = R/2 => a*t1*t1 = v*t2 = a*t1*t2 => t1=t2 avec 2*t1 + t2 = T => t1=T/3
 			//a =R/(2*t1*t1) = R/(2*(T/3)*(T/3) = 9R/2T
-			accelerationRotation = 9 * AngleEnFraction * (1+2*portionRetrait) * 360 / (2*Mathf.Pow(timeRotationPrincipal, 2));
+			//TODO comprendre pourquoi le facteur est 3 au lieu de 2 pour la portionRetrait
+			accelerationRotation = 9 * AngleEnFraction * (1+3*portionRetrait) * 360 / (2*Mathf.Pow(timeRotationPrincipal, 2));
 		}
 
 		initAccelerationByTime(accelerationRetrait, accelerationRotation);
@@ -88,7 +89,7 @@ public class RotateSamplePingPong : MonoBehaviour
 		vitesseActuel += accelerationActuel * t;
 		tempsActuel += t;
 
-		if (tempsActuel > time + Delay)
+		if (tempsActuel > time)
 		{
 			vitesseActuel = 0;
 			Quaternion destination;
@@ -124,7 +125,8 @@ public class RotateSamplePingPong : MonoBehaviour
 
 		if (portionTempsRetrait > 0)
 		{
-			accelerationByTime.Add(timeRotationPrincipal * portionTempsRetrait, -accelerationRetrait);
+			accelerationByTime.Add(timeRotationPrincipal * portionTempsRetrait /2, -accelerationRetrait);
+			accelerationByTime.Add(timeRotationPrincipal * portionTempsRetrait, accelerationRetrait);
 		}
 
 		//Si t1=t2 alors le rotation est séparé en 3 tiers acceleration, constant ralentissement
@@ -134,7 +136,8 @@ public class RotateSamplePingPong : MonoBehaviour
 
 		if (portionTempsRetrait > 0)
 		{
-			accelerationByTime.Add(time, -accelerationRetrait);
+			accelerationByTime.Add(time - timeRotationPrincipal * portionTempsRetrait / 2, -accelerationRetrait);
+			accelerationByTime.Add(time, accelerationRetrait);
 		}
 	}
 
