@@ -29,9 +29,10 @@ public class RotateSamplePingPong : MonoBehaviour
 
 	void Start()
 	{
-		//FIXME supprimer itween
-		//iTween.RotateBy(gameObject, iTween.Hash("x", AngleEnFraction, "easeType", "easeInOutBack", "loopType", "pingPong", "delay", Delay, "time", time));
-		Debug.Log(gameObject.name + " utilise RotateSamplePingPong");
+		if (portionRetrait == 0)
+		{
+			Debug.Log(gameObject.name + " utilise RotateSamplePingPong");
+		}
 
 		rigidB = GetComponent<Rigidbody>();
 		if(null != rigidB)
