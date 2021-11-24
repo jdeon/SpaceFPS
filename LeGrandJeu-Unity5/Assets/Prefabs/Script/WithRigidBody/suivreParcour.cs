@@ -11,13 +11,12 @@ public class suivreParcour : MonoBehaviour, IActivable {
 	public bool modeCinematique; //diminue le temps entre les calculs pour éviter les sacades
 
 	private float t;
-	private Transform positionDepart;
+	private Vector3 positionDepart;
+	private Quaternion rotationDepart;
 	private int etapeEnCours;
-	private float vitesseDebut;
 	private float tempsParcours = 0;
 	private bool isRetour = false;
 	private bool isFini = false;
-	private Rigidbody objectRigidbody;
 	private Vector3 directionDebut;
 	private bool isBeforeStart;
 	private float precisionCalcul;
@@ -59,9 +58,9 @@ public class suivreParcour : MonoBehaviour, IActivable {
 		if (this.isFini){
 			if (isDestroyAtEnd) {
 				Destroy (gameObject, delayToDestroy);
-			} else if (null != objectRigidbody) {
-				objectRigidbody.velocity = Vector3.zero;
-				objectRigidbody.isKinematic = true;
+			} else if (null != GetComponent<Rigidbody>()) {
+				GetComponent<Rigidbody>().velocity = Vector3.zero;
+				GetComponent<Rigidbody>().isKinematic = true;
 				enabled = false;
 			}
 		}
@@ -89,14 +88,14 @@ public class suivreParcour : MonoBehaviour, IActivable {
 	}
 
 	private void preparerLancementCoroutine(){
-		this.positionDepart = transform;
-		this.objectRigidbody = gameObject.GetComponent<Rigidbody>();
+		this.positionDepart = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+		this.rotationDepart = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+		Rigidbody objectRigidbody = GetComponent<Rigidbody>();
 		if (null != objectRigidbody){
-			this.objectRigidbody.isKinematic = true;
-			this.objectRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+			objectRigidbody.isKinematic = true;
+			objectRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 		}
 		this.directionDebut = (this.parcours.listEtapeTransform[0].position - this.transform.position).normalized;
-		this.vitesseDebut = this.parcours.listTempsPourProchaineEtape [0] > 0 ? vitesseRelative * Vector3.Distance(this.parcours.listEtapeTransform [0].position, positionDepart.position) / parcours.listTempsPourProchaineEtape [0] : 0;
 		this.timeLastUpdate = Time.fixedTime;
 
 		StartCoroutine ("suivreLeParvours");
@@ -157,17 +156,34 @@ public class suivreParcour : MonoBehaviour, IActivable {
 
 	void allerVersDebutParcours(){
 		//
-		if (this.vitesseDebut > 0 && null != this.objectRigidbody) {
-			this.objectRigidbody.MovePosition(this.objectRigidbody.position + directionDebut * this.vitesseDebut * precisionCalcul);
-		} else if (parcours.listTempsPourProchaineEtape [0] > 0){
-			transform.position = Vector3.Lerp (positionDepart.position, parcours.listEtapeTransform [0].position, t / parcours.listTempsPourProchaineEtape [0]);
+		if (parcours.listTempsPourProchaineEtape[0] > 0 ) {
+
+			//REM depuis unity 2020 on ne peut toucher au transform après le movePosition donc rotation en priorite
+			if (parcours.isRotating)
+			{
+				transform.rotation = Quaternion.Slerp(this.rotationDepart, parcours.listEtapeTransform[0].rotation, t / parcours.listTempsPourProchaineEtape[0]);
+			}
+
+			Vector3 targetPosition = Vector3.Lerp(positionDepart, parcours.listEtapeTransform[0].position, t / parcours.listTempsPourProchaineEtape[0]);
+			Rigidbody objectRigidbody = GetComponent<Rigidbody>();
+			if (null != objectRigidbody)
+            {
+				objectRigidbody.MovePosition(targetPosition);
+			} 
+			else
+            {
+				transform.position = targetPosition;
+
+			}
 		} else {
 			transform.position = this.parcours.listEtapeTransform [0].position;
+
+			if (parcours.isRotating)
+            {
+				transform.rotation = parcours.listEtapeTransform[0].rotation;
+			}
 		}
 
-		if (parcours.isRotating && parcours.listTempsPourProchaineEtape [0] != 0) {
-			transform.rotation = Quaternion.Slerp (positionDepart.rotation, parcours.listEtapeTransform [0].rotation, t / parcours.listTempsPourProchaineEtape [0]);
-		}
 		t += (vitesseRelative * precisionCalcul);
 		if (t > parcours.listTempsPourProchaineEtape [0]) {
 			this.etapeEnCours = 1;
