@@ -7,7 +7,7 @@ public class RotateSamplePingPong : RotateAbstract
 
 	void Start()
 	{
-		axeRotation = transform.right;
+		axeRotation = Vector3.right;
 		base.Start();
 		isRetour = false;
 	}
