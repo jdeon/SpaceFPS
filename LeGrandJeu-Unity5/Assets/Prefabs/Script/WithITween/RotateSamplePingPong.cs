@@ -1,14 +1,44 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
-public class RotateSamplePingPong : MonoBehaviour
+public class RotateSamplePingPong : RotateAbstract
 {	
-	public float time;
-	public float Delay;
-	public float AngleEnFraction;
+	private bool isRetour;
 
-	void Start(){
-		iTween.RotateBy(gameObject, iTween.Hash("x", AngleEnFraction, "easeType", "easeInOutBack", "loopType", "pingPong", "delay", Delay, "time", time));
+	void Start()
+	{
+		axeRotation = Vector3.right;
+		base.Start();
+		isRetour = false;
+	}
+
+	protected override void movementProcess(float accelerationActuel, float deltaT)
+	{
+		if (isRetour)
+		{
+			accelerationActuel *= -1f;
+		}
+
+		base.movementProcess(accelerationActuel, deltaT);
+	}
+
+	protected override void delayProcess()
+	{
+		vitesseActuel = 0;
+		if (isRetour)
+		{
+			rotateTo(rotationOriginal * Quaternion.Euler(axeRotation * AngleEnFraction * 360));
+		}
+		else
+		{
+			base.delayProcess();
+		}
+	}
+
+	protected override void postMovementProcess()
+	{
+		tempsActuel = 0;
+		isRetour = !isRetour;
 	}
 }
 

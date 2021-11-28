@@ -164,6 +164,7 @@ public class Parcours : MonoBehaviour {
 	 * */
 	public void parcourirEtape(Transform transformTarget, Rigidbody rigidbTarget, float tempsSurEtapeEnCours, int etapeEnCours){
 
+		//REM depuis unity 2020 on ne peut toucher au transform après le movePosition donc rotation en priorite
 		if (isRotating){
 			appliquerRotation (tempsSurEtapeEnCours, transformTarget, etapeEnCours);
 		}

@@ -6,6 +6,7 @@ public class TeteChercheuseInertie : MonoBehaviour {
 	public Transform targetTransform;
 	public float force;
 	public float maxVelocity;
+	public float inertie;
 
 	public ForceMode _forceMode = ForceMode.VelocityChange;
 
@@ -14,12 +15,12 @@ public class TeteChercheuseInertie : MonoBehaviour {
 	public int delayAutoDestrucSiCondFaux;
 	public GameObject animDestruct;
 
-	private Rigidbody targetRigidbody;
+	private Rigidbody rigidB;
 	private float delayAvantAutoDestruct;
 
 	void Start() 
 	{
-		targetRigidbody = GetComponent<Rigidbody>();
+		rigidB = GetComponent<Rigidbody>();
 		delayAvantAutoDestruct = (float) delayAutoDestrucSiCondFaux;
 		if (null != animDestruct) {
 			animDestruct.SetActive (false);
@@ -28,13 +29,13 @@ public class TeteChercheuseInertie : MonoBehaviour {
 
 	void Update () 
 	{
-		if (maxVelocity > 0 && targetRigidbody.velocity.magnitude > maxVelocity) {
-			targetRigidbody.velocity = targetRigidbody.velocity * maxVelocity / targetRigidbody.velocity.magnitude;
+		if (maxVelocity > 0 && rigidB.velocity.magnitude > maxVelocity) {
+			rigidB.velocity = rigidB.velocity * maxVelocity / rigidB.velocity.magnitude;
 		}
 
 		if(null == conditonRecher || conditonRecher.getIsActive()){
 			transform.LookAt (targetTransform);
-			targetRigidbody.AddForce(transform.forward*force*Time.deltaTime,_forceMode );
+			rigidB.AddForce(transform.forward*force*Time.deltaTime,_forceMode );
 			delayAvantAutoDestruct = (float) delayAutoDestrucSiCondFaux;
 		} else if (autoDestruct){
 			delayAvantAutoDestruct -= Time.deltaTime;
@@ -61,7 +62,9 @@ public class TeteChercheuseInertie : MonoBehaviour {
 
 	private void destructionProjectile(){
 		if (null != animDestruct) {
-			GameObject.Instantiate (animDestruct, transform.position, transform.rotation);
+			GameObject clone = GameObject.Instantiate (animDestruct, transform.position, transform.rotation);
+			clone.SetActive(true);
+			GameObject.Destroy(clone, 5f);
 		}
 		GameObject.Destroy (gameObject);
 	}
