@@ -67,34 +67,6 @@ public class ParcoursATraversZone : MonoBehaviour {
 	}
 
 	public bool isTargetAtteignable(Vector3 coordOrigin, Vector3 coordTarget){
-		int nbObstacleMax = 10;
-		RaycastHit hit = new RaycastHit();
-		bool isTrigger = true;
-		while (isTrigger){
-			isTrigger =false;
-			hit = new RaycastHit();
-			if (Physics.Linecast (coordOrigin, coordTarget, out hit)){
-				if(null == hit.collider || hit.collider.gameObject.layer == layerRayCastDefault.value)
-                {
-					return false;
-				}
-				//On touche directement le controller
-				else if (hit.collider.gameObject.layer == layerRayCastController.value)
-                {
-					return true;
-				}
-				//On touche un collider Trigger donc on reocommence a partir du point de colision
-				else if (hit.collider.isTrigger && nbObstacleMax >=0 && 
-					(hit.collider.gameObject.layer == layerRayCastDetectZone.value || hit.collider.gameObject.layer == layerRayCastTargetZone.value))
-                {
-					isTrigger = true;
-					Vector3 vectorToTarget = coordTarget - coordOrigin;
-					vectorToTarget.Normalize();
-					coordOrigin = hit.point + (.001f * vectorToTarget); //Plus permet d'éviter de toujours retombé sur le meme collider
-					nbObstacleMax --;
-				}
-			}
-		}
-		return false;
+		return UtilsTargetable.isTargetAtteignable(coordOrigin, coordTarget, 10);
 	}
 }

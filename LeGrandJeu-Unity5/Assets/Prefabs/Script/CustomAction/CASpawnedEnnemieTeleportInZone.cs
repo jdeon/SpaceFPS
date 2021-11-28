@@ -11,6 +11,8 @@ public class CASpawnedEnnemieTeleportInZone : CASpawnedPrefabInZone {
 	//défini si l'on peut passer dans tout le box collider ou uniquement le centre
 	public bool useColliderForPassage;
 	public List<GameObject> listPassage;
+
+	public float timeToAutoDestruct;
 	
 	public override IEnumerator DoActionOnEvent (MonoBehaviour sender, GameObject args)
 	{	
@@ -22,6 +24,13 @@ public class CASpawnedEnnemieTeleportInZone : CASpawnedPrefabInZone {
 			teleportScript.target = target;
 			teleportScript.gererDeplacement = modeAuto;
 			teleportScript.activate();
+
+			if(timeToAutoDestruct > 0)
+            {
+				teleportScript.autoDestruct = true;
+				teleportScript.timeBeforeAutoDestruct = timeToAutoDestruct;
+			}
+
 			if(!modeAuto && null != listPassage && listPassage.Count >0){
 				if (useColliderForPassage) {
 					List<Collider> listZonePassage = new List<Collider> ();
