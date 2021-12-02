@@ -10,7 +10,25 @@ public class GestionPause : MonoBehaviour {
 	private bool inPause;
 	private bool changeEtat;
 
-	// Use this for initialization
+	private PlayerInputAction controller;
+	void Awake()
+	{
+		controller = new PlayerInputAction();
+		controller.PlayerActions.Cancel.performed += ctx => {
+			OnCancel();
+		};
+	}
+
+	private void OnEnable()
+	{
+		controller.Enable();
+	}
+
+	private void OnDisable()
+	{
+		controller.Disable();
+	}
+
 	void Start () {
 		inPause = false;
 		changeEtat = false;
@@ -40,10 +58,11 @@ public class GestionPause : MonoBehaviour {
 
 			changeEtat = false;
 		}
+	}
 
-		if (Input.GetKeyDown (KeyCode.Escape)) {
-			resumeGame ();
-		}
+    void OnCancel()
+    {
+		resumeGame();
 	}
 
 	public void resumeGame(){

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.InputSystem;
 
 public class PitchScript : MonoBehaviour {
 
@@ -17,10 +17,11 @@ public class PitchScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 		var euler = _transform.localRotation.eulerAngles;
 
-		float newAngle = euler.x - Input.GetAxis("Mouse Y") * Time.deltaTime * _pitchSpeed;
+		float verticalLook = Mouse.current.delta.y.ReadValue();
+		float newAngle = euler.x -  Time.deltaTime * _pitchSpeed * verticalLook * 360/ Screen.width;
 
 		_transform.localRotation = 
 			Quaternion.Euler(

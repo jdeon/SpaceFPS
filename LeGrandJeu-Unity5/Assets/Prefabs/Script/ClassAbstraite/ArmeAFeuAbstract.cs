@@ -18,9 +18,15 @@ public abstract class ArmeAFeuAbstract : MonoBehaviour {
 	void Update () {
 		if (this.tempsAvantTirer >= 0) {
             this.tempsAvantTirer -= Time.deltaTime;
-		} else if (Input.GetMouseButtonDown (0) && transform.parent.name == Constantes.STR_TRANSFORM_ARME) {
-			tirer ();
-            this.tempsAvantTirer = this.delaiRechargement;
+		}
+	}
+
+	void OnAttack()
+    {
+		if (transform.parent.name == Constantes.STR_TRANSFORM_ARME)
+		{
+			tirer();
+			this.tempsAvantTirer = this.delaiRechargement;
 		}
 	}
 

@@ -1,20 +1,34 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.InputSystem;
 
 public class ViseeDeCanonV2 : MonoBehaviour {
 
 	public float turnSpeed = 50f;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () 
+	private PlayerInputAction controller;
+	void Awake()
 	{
-		transform.Rotate(Vector3.left * turnSpeed * Time.deltaTime * Input.GetAxis("Vertical"));
-		
-		transform.Rotate(Vector3.up * turnSpeed * Time.deltaTime * Input.GetAxis("Horizontal"));
+		controller = new PlayerInputAction();
+		controller.PlayerActions.Movement.performed += ctx => {
+			OnMovement(ctx);
+		};
+	}
+
+	private void OnEnable()
+	{
+		controller.Enable();
+	}
+
+	private void OnDisable()
+	{
+		controller.Disable();
+	}
+
+	void OnMovement(InputAction.CallbackContext ctx)
+	{
+		Vector2 inputDirection = ctx.ReadValue<Vector2>();
+
+		transform.Rotate((inputDirection.y * Vector3.left + inputDirection.x * Vector3.up) * turnSpeed * Time.deltaTime);
+
 	}
 }

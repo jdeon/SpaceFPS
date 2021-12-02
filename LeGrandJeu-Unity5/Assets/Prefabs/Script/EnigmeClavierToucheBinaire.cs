@@ -10,8 +10,28 @@ public class EnigmeClavierToucheBinaire : EnigmeClavierAToucheAbstract {
 	public Material[] listMaterial;
 	
 	private Transform[,] tableauDeTouche;
-	
-	
+
+	private PlayerInputAction controller;
+
+
+	void Awake()
+	{
+		controller = new PlayerInputAction();
+		controller.PlayerActions.Use.performed += ctx => {
+			OnUse();
+		};
+	}
+
+	private void OnEnable()
+	{
+		controller.Enable();
+	}
+
+	private void OnDisable()
+	{
+		controller.Disable();
+	}
+
 	// Use this for initialization
 	public override void Start () {
 		base.Start();
@@ -38,8 +58,8 @@ public class EnigmeClavierToucheBinaire : EnigmeClavierAToucheAbstract {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if (Input.GetMouseButtonUp (0) && !enigmeResolu) {
+	void OnUse() {
+		if (!enigmeResolu) {
 			for (int numLigne = 0; numLigne < this.nbLigne; numLigne++) {
 				for (int numColonne = 0; numColonne < this.nbColonne; numColonne++) {
 					Transform tranfTouche = this.tableauDeTouche [numLigne,numColonne];

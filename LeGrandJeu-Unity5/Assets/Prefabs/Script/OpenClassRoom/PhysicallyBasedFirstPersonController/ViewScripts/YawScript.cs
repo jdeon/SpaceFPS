@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.InputSystem;
 
 public class YawScript : MonoBehaviour {
 	
@@ -13,7 +13,9 @@ public class YawScript : MonoBehaviour {
 			_transform = this.transform;
 	}
 
-	void FixedUpdate () {
-		_transform.Rotate(_transform.up, Input.GetAxis("Mouse X") * Time.deltaTime * _yawSpeed, Space.World);
+	void Update() {
+		float horizontalLook = Mouse.current.delta.x.ReadValue();
+		_transform.Rotate(_transform.up, Time.deltaTime * _yawSpeed * horizontalLook * 360/ Screen.width, Space.World);
+		
 	}
 }

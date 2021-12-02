@@ -10,15 +10,29 @@ public class EnigmeClavierSaisiCode : EnigmeClavierAToucheAbstract {
 	public Material[] listMaterial;
 
 	private int numToucheActive = 0;
+	private PlayerInputAction controller;
 
 
-	// Use this for initialization
-	/*void Start () {
-	}*/
-	
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetMouseButtonUp (0) && !enigmeResolu) {
+	void Awake()
+	{
+		controller = new PlayerInputAction();
+		controller.PlayerActions.Use.performed += ctx => {
+			OnUse();
+		};
+	}
+
+	private void OnEnable()
+	{
+		controller.Enable();
+	}
+
+	private void OnDisable()
+	{
+		controller.Disable();
+	}
+
+	void OnUse () {
+		if (!enigmeResolu) {
 			for(int numTouche = 0; numTouche < listeToucheTrie.Length ; numTouche++){
 				Transform tranfTouche = listeToucheTrie[numTouche];
 				if(null != tranfTouche && null != tranfTouche.GetComponent<ToucheClavierCliquable>() && !tranfTouche.GetComponent<ToucheClavierCliquable>().getIsClickTraite()){

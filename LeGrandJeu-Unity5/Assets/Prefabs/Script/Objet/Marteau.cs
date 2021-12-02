@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Marteau : ObjetPortable {
@@ -16,16 +15,18 @@ public class Marteau : ObjetPortable {
 		anim = GetComponent<Animator> ();
 	}
 
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetMouseButtonDown (0) && null != transform.parent && attackOrder.Length > 0 && Time.timeScale != 0){
-			if (transform.parent.name == "MainDroite" || transform.parent.name == "MainGauche") {
-				
-				if (indexAttack >= attackOrder.Length) {
+	void OnAttack()
+    {
+		if(null != transform.parent && attackOrder.Length > 0 && Time.timeScale != 0){
+			if (transform.parent.name == "MainDroite" || transform.parent.name == "MainGauche")
+			{
+
+				if (indexAttack >= attackOrder.Length)
+				{
 					indexAttack = 0;
 				}
-					
-				frappe (attackOrder [indexAttack]);
+
+				frappe(attackOrder[indexAttack]);
 				indexAttack++;
 			}
 		}

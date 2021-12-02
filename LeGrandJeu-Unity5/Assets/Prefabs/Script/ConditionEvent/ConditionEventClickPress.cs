@@ -3,14 +3,23 @@ using System.Collections;
 
 public class ConditionEventClickPress : ConditionEventAbstract {
 
-	
-	void Update () {
-		if (Input.GetKeyDown (KeyCode.Mouse0) || Input.GetKeyDown (KeyCode.E)) {
-			activeEvent ();
-		} else if (Input.GetKeyUp (KeyCode.Mouse0) || Input.GetKeyUp (KeyCode.E)) {
-			desactiveEvent();
-		}
-	}
+    private PlayerInputAction controller;
+    void Awake()
+    {
+        controller = new PlayerInputAction();
+        controller.PlayerActions.Use.performed += ctx => { activeEvent(); };
+        controller.PlayerActions.Use.canceled += ctx => {desactiveEvent();};
+    }
+
+    private void OnEnable()
+    {
+        controller.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controller.Disable();
+    }
 
 	public override void onChange (){
 	}

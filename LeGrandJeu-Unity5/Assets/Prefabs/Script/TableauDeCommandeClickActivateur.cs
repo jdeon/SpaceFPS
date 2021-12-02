@@ -10,15 +10,35 @@ public class TableauDeCommandeClickActivateur : MonoBehaviour {
 	private bool isControllerIn;
 	private bool isReady;
 	private int numEtape;
-	// Use this for initialization
+
+	private PlayerInputAction controller;
+
+	void Awake()
+	{
+		controller = new PlayerInputAction();
+		controller.PlayerActions.Use.performed += ctx => {
+			OnUse();
+		};
+	}
+
+	private void OnEnable()
+	{
+		controller.Enable();
+	}
+
+	private void OnDisable()
+	{
+		controller.Disable();
+	}
+
 	void Start () {
 		isReady = false;
 		isControllerIn = false;
 		numEtape = 0;
 	}
 
-	void Update() {
-		if (isReady && isControllerIn && Input.GetMouseButtonDown (0)) {
+	void OnUse() {
+		if (isReady && isControllerIn) {
 			Transform[] tabTransformObjetAActiver = transform.parent.Find("ToucheActivable").GetComponent<TableauDeCommandeZoneActivateur>().getTabTranformObjetLie();
 
 			Transform lieuExplosionGeneral = null;
