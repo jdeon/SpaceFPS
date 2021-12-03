@@ -8,14 +8,25 @@ public class YawScript : MonoBehaviour {
 	[SerializeField]
 	private float _yawSpeed;
 
+	private float horizontalLook;
+
 	void Start () {
 		if (_transform == null)
 			_transform = this.transform;
 	}
 
-	void Update() {
-		float horizontalLook = Mouse.current.delta.x.ReadValue();
-		_transform.Rotate(_transform.up, Time.deltaTime * _yawSpeed * horizontalLook * 360/ Screen.width, Space.World);
-		
+	void OnCameraView(InputValue inputValue) {
+		horizontalLook = inputValue.Get<Vector2>().x;
+
+		//mouse get pixel movement
+		/*if(horizontalLook > 1)
+        {
+			horizontalLook /= Screen.width;
+		}*/
 	}
+
+    private void Update()
+    {
+		_transform.Rotate(_transform.up, Time.deltaTime * _yawSpeed * horizontalLook, Space.World);
+    }
 }

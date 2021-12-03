@@ -8,6 +8,8 @@ public class PitchScript : MonoBehaviour {
 	[SerializeField]
 	private float _pitchSpeed;
 
+	private float verticalLook;
+
 	// Use this for initialization
 	void Start () {
 		Cursor.visible = false;
@@ -17,16 +19,25 @@ public class PitchScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void OnCameraView(InputValue inputValue) {
+		verticalLook = inputValue.Get<Vector2>().y;
+
+		//mouse get pixel movement
+		/*if (verticalLook > 1)
+		{
+			verticalLook /= Screen.height;
+		}*/
+	}
+
+	private void Update()
+	{
 		var euler = _transform.localRotation.eulerAngles;
+		float newAngle = euler.x - Time.deltaTime * _pitchSpeed * verticalLook;
 
-		float verticalLook = Mouse.current.delta.y.ReadValue();
-		float newAngle = euler.x -  Time.deltaTime * _pitchSpeed * verticalLook * 360/ Screen.width;
-
-		_transform.localRotation = 
+		_transform.localRotation =
 			Quaternion.Euler(
 				Mathf.Clamp(newAngle <= 180f ? newAngle : newAngle - 360f, -90f, 90f)
-			                 , euler.y
-			                 , euler.z);
+								, euler.y
+								, euler.z);
 	}
 }

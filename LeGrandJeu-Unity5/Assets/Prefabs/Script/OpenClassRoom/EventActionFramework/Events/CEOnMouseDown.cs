@@ -27,6 +27,7 @@ public class CEOnMouseDown : CustomEventScript {
 
     private Collider findClickCollider()
     {
+        //FIXME changer mouse par un cursor
         RaycastHit hit;
         Vector3 coor = Mouse.current.position.ReadValue();
         Camera gameCamera = Camera.current.GetComponent<Camera>();

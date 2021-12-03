@@ -33,6 +33,7 @@ public class ToucheClavierCliquable : MonoBehaviour {
     private Collider findClickCollider()
     {
         RaycastHit hit;
+        //FIXME changer mouse par un cursor
         Vector3 coor = Mouse.current.position.ReadValue();
         Camera gameCamera = Camera.current.GetComponent<Camera>();
 
