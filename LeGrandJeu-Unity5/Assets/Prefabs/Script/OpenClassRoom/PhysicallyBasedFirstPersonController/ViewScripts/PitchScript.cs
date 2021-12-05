@@ -12,8 +12,6 @@ public class PitchScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Cursor.visible = false;
-
 		if (_transform == null)
 			_transform = this.transform;
 	}

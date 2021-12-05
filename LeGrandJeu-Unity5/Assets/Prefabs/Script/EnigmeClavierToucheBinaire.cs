@@ -65,7 +65,7 @@ public class EnigmeClavierToucheBinaire : EnigmeClavierAToucheAbstract {
 					Transform tranfTouche = this.tableauDeTouche [numLigne,numColonne];
 					ToucheClavierCliquable scriptTouche = tranfTouche.GetComponent<ToucheClavierCliquable> ();
 					if (null != tranfTouche && null != scriptTouche && !scriptTouche.getIsClickTraite ()) {
-						Cursor.visible = true;
+						CursorCustom.Activate = true;
 
 						Transform[] tabCase = new Transform[5];
 						tabCase[0] = tranfTouche;

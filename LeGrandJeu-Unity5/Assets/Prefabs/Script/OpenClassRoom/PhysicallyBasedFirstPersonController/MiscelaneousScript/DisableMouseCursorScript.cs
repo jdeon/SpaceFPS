@@ -6,5 +6,6 @@ public class DisableMouseCursorScript : MonoBehaviour {
 	void Start()
 	{
 		Cursor.visible = false;
+		CursorCustom.Activate = false;
 	}
 }

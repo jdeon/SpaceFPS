@@ -10,6 +10,8 @@ public class GestionPause : MonoBehaviour {
 	private bool inPause;
 	private bool changeEtat;
 
+	private Transform cursor;
+
 	private PlayerInputAction controller;
 	void Awake()
 	{
@@ -17,6 +19,8 @@ public class GestionPause : MonoBehaviour {
 		controller.PlayerActions.Cancel.performed += ctx => {
 			OnCancel();
 		};
+
+		cursor = transform.Find("Cursor");
 	}
 
 	private void OnEnable()
@@ -48,11 +52,11 @@ public class GestionPause : MonoBehaviour {
 
 			if (inPause) {
 				goEcran.SetActive (inPause);
-				Cursor.visible = true;
+				CursorCustom.Activate = true;
 				Time.timeScale = 0;
 			} else {
 				goEcran.SetActive (inPause);
-				Cursor.visible = false;
+				CursorCustom.Activate = false;
 				Time.timeScale = 1;
 			}
 

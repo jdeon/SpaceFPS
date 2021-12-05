@@ -16,7 +16,7 @@ public class ConnexionPseudo : ConditionEventAbstract {
 	private static int idCheckpointActuel;
 
 	void Start(){
-		Cursor.visible = true;
+		CursorCustom.Activate = true;
 		nivActuel = 0;
 		idCheckpointActuel = 0;
 	}

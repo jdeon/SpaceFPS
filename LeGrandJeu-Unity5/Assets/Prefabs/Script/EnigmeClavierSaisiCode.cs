@@ -43,7 +43,7 @@ public class EnigmeClavierSaisiCode : EnigmeClavierAToucheAbstract {
 						numToucheActive++;
 						if(numToucheActive == listNumToucheValid.Length){
 							enigmeResolu = true;
-							Cursor.visible = false;
+							CursorCustom.Activate = false;
 						}
 					} else {
 						if(listMaterial.Length >=3){

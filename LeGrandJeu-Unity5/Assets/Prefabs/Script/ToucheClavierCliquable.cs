@@ -11,7 +11,7 @@ public class ToucheClavierCliquable : MonoBehaviour {
     {
         controller = new PlayerInputAction();
         controller.PlayerActions.Use.performed += ctx => {
-            Collider col = findClickCollider();
+            Collider col = CursorCustom.findClickCollider();
             if (null != col)
             {
                 isClick = true;
@@ -28,23 +28,6 @@ public class ToucheClavierCliquable : MonoBehaviour {
     private void OnDisable()
     {
         controller.Disable();
-    }
-
-    private Collider findClickCollider()
-    {
-        RaycastHit hit;
-        //FIXME changer mouse par un cursor
-        Vector3 coor = Mouse.current.position.ReadValue();
-        Camera gameCamera = Camera.current.GetComponent<Camera>();
-
-        if (Physics.Raycast(gameCamera.ScreenPointToRay(coor), out hit))
-        {
-            return hit.collider;
-        }
-        else
-        {
-            return null;
-        }
     }
 
     public bool getIsClick(){

@@ -7,7 +7,7 @@ public class CACursorView : CustomActionScript {
 	public bool isActivation;
 
 	public override IEnumerator DoActionOnEvent (MonoBehaviour sender, GameObject args){
-		Cursor.visible = isActivation;
+		CursorCustom.Activate = isActivation;
 		yield return null;
 	}
 }

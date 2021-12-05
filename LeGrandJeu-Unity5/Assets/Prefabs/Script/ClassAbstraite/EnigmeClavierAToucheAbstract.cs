@@ -8,7 +8,7 @@ public abstract class EnigmeClavierAToucheAbstract : EnigmeAbstract {
 
 	// Use this for initialization
 	public virtual void Start () {
-		Cursor.visible = true;
+		CursorCustom.Activate = true;
 
 		listeToucheTrie = new Transform[transform.childCount];
 		List<Transform> listToucheATrier = new List<Transform>();
@@ -56,7 +56,7 @@ public abstract class EnigmeClavierAToucheAbstract : EnigmeAbstract {
 	}
 
 	protected void resolutionEnigme(){
-		Cursor.visible = false;
+		CursorCustom.Activate = false;
 		enigmeResolu = true;
 	}
 }
