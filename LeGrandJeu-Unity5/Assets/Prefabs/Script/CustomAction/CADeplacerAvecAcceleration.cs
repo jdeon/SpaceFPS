@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * FIXME problème de coheficient 2 sur le temps
+ * */
 public class CADeplacerAvecAcceleration : CustomActionScript {
 
 	public Transform destination;
@@ -14,7 +17,6 @@ public class CADeplacerAvecAcceleration : CustomActionScript {
 	private bool isRetour;
 	private Vector3 positionInitiale;
 	private Vector3 destinationFinal;
-	private Vector3 direction;
 	private float distanceDAcseleration;
 	private float distanceTotal;
     private Rigidbody objectRigidbody;
@@ -22,11 +24,20 @@ public class CADeplacerAvecAcceleration : CustomActionScript {
     public override void  Start(){
 		base.Start ();
 		this.isRetour = false;
-		this.positionInitiale = transform.position;
+		this.positionInitiale = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
 		this.destinationFinal = destination.position;
-		this.direction = (this.destinationFinal - this.positionInitiale).normalized;
 		this.distanceTotal = Vector3.Distance (this.positionInitiale, this.destinationFinal);
-		this.distanceDAcseleration = (this.distanceTotal - this.vitesseMax * this.dureeAuMax) / 2f;
+
+		if (ModeAcceleration.Lineaire == modeAcceleration)
+		{
+			/*
+			 * D = a*t1*t1/2 + Vmax*t2 + a*t1*t1/2  => 2*t1 + t2 <= Tmax et a*t1 = Vmax
+			 * D = a*t1*t1 + Vmax*t2 = Vmax(t1+t2) => Vmax (t1 + Tmax - 2*t1) = Vmax(Tmax-t1)
+			 * t1 = Tmax - D/Vmax => a = Vmax/t1 = Vmax / (Tmax - D/Vmax)
+			 * d1 = a *t1 * t1 /2 = Vmax * t1 / 2 = (Vmax*Tmax - D) / 2
+			*/
+			this.distanceDAcseleration = (this.vitesseMax * this.dureeAuMax - this.distanceTotal) / 2;
+		}
 
         this.objectRigidbody = GetComponent<Rigidbody>();
 
@@ -53,7 +64,9 @@ public class CADeplacerAvecAcceleration : CustomActionScript {
                 this.objectRigidbody.isKinematic = true;
 			}
 
-			if(!isRetour){
+			Vector3 direction = (this.destinationFinal - transform.position).normalized;
+
+			if (!isRetour){
 				float portionParcourue = Vector3.Distance(transform.position, this.positionInitiale); 
 				vitesse = calculVitesseInstantanne(portionParcourue);
 				this.objectRigidbody.velocity = direction * vitesse;
@@ -73,15 +86,16 @@ public class CADeplacerAvecAcceleration : CustomActionScript {
 		case ModeAcceleration.Constant : 
 			return this.vitesseMax;
 
-		case ModeAcceleration.Lineaire : 
-			if(portionParcourue <= this.distanceDAcseleration){
+		case ModeAcceleration.Lineaire :
+			if (portionParcourue <= this.distanceDAcseleration)
+				{
 				float vitesse = this.vitesseMax * portionParcourue/ this.distanceDAcseleration;
 				if (vitesse < .5f) {
 					vitesse = .5f;
 				}
 				return vitesse;
-			} else if (portionParcourue >= this.distanceDAcseleration + this.vitesseMax*this.dureeAuMax){
-				float portionDeceleration = portionParcourue- (this.distanceDAcseleration + this.vitesseMax*this.dureeAuMax);
+			} else if (portionParcourue >= this.distanceTotal - this.distanceDAcseleration){
+				float portionDeceleration = portionParcourue - (this.distanceTotal - this.distanceDAcseleration);
 				return this.vitesseMax * (1 - portionDeceleration / this.distanceDAcseleration);
 			} else {
 				return this.vitesseMax;

@@ -10,13 +10,24 @@ public class YawScript : MonoBehaviour {
 
 	private float horizontalLook;
 
+	private ContrainteController _contrainteController;
+
 	void Start () {
 		if (_transform == null)
 			_transform = this.transform;
+
+		_contrainteController = GetComponent<ContrainteController>();
 	}
 
 	void OnCameraView(InputValue inputValue) {
-		horizontalLook = inputValue.Get<Vector2>().x;
+		if (null != _contrainteController && !_contrainteController.canRotate)
+		{
+			horizontalLook = 0;
+		}
+		else
+		{
+			horizontalLook = inputValue.Get<Vector2>().x;
+		}
 
 		//mouse get pixel movement
 		/*if(horizontalLook > 1)

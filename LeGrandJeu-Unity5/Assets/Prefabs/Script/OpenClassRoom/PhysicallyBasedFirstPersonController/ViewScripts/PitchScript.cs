@@ -10,15 +10,26 @@ public class PitchScript : MonoBehaviour {
 
 	private float verticalLook;
 
+	private ContrainteController _contrainteController;
+
 	// Use this for initialization
 	void Start () {
 		if (_transform == null)
 			_transform = this.transform;
+
+		_contrainteController = GetComponentInParent<ContrainteController>();
 	}
 	
 	// Update is called once per frame
 	void OnCameraView(InputValue inputValue) {
-		verticalLook = inputValue.Get<Vector2>().y;
+		if (null != _contrainteController && !_contrainteController.canRotate)
+		{
+			verticalLook = 0;
+		} else
+        {
+			verticalLook = inputValue.Get<Vector2>().y;
+		}
+		
 
 		//mouse get pixel movement
 		/*if (verticalLook > 1)

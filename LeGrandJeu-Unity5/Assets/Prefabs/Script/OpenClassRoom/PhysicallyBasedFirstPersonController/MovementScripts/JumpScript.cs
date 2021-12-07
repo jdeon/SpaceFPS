@@ -33,11 +33,12 @@ public class JumpScript : MonoBehaviour {
 	private RaycastHit _hit;
 
 	private MoveScript _moveScript;
+	private ContrainteController _contrainteController;
 
 	void Start(){
 		_audioSource = GetComponent<AudioSource> ();
 		_moveScript = GetComponent<MoveScript> ();
-
+		_contrainteController = GetComponent<ContrainteController>();
 	}
 
 
@@ -60,7 +61,17 @@ public class JumpScript : MonoBehaviour {
 
 	void OnJump()
     {
-		if (_canJump && !_moveScript.isSlopeTooSteep && (isInGround() || _moveScript.isStepClimbing))
+		if(null != _contrainteController && !_contrainteController.canMove)
+        {
+			return;
+        }
+
+		if(null == _rigidbody)
+        {
+			_rigidbody = GetComponent<Rigidbody>();
+		}
+
+		if (null != _rigidbody && _canJump && !_moveScript.isSlopeTooSteep && (isInGround() || _moveScript.isStepClimbing))
 		{
 			_rigidbody.AddForce(_transform.up * _jumpSpeed, ForceMode.VelocityChange);
 			if (_jumpSound != null)
