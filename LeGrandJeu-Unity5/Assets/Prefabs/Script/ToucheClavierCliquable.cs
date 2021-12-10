@@ -12,7 +12,7 @@ public class ToucheClavierCliquable : MonoBehaviour {
         controller = new PlayerInputAction();
         controller.PlayerActions.Use.performed += ctx => {
             Collider col = CursorCustom.findClickCollider();
-            if (null != col)
+            if (null != col && this == col.gameObject.GetComponent<ToucheClavierCliquable>())
             {
                 isClick = true;
                 isClickTraite = false;

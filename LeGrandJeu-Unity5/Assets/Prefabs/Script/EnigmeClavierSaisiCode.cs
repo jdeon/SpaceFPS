@@ -10,28 +10,8 @@ public class EnigmeClavierSaisiCode : EnigmeClavierAToucheAbstract {
 	public Material[] listMaterial;
 
 	private int numToucheActive = 0;
-	private PlayerInputAction controller;
 
-
-	void Awake()
-	{
-		controller = new PlayerInputAction();
-		controller.PlayerActions.Use.performed += ctx => {
-			OnUse();
-		};
-	}
-
-	private void OnEnable()
-	{
-		controller.Enable();
-	}
-
-	private void OnDisable()
-	{
-		controller.Disable();
-	}
-
-	void OnUse () {
+	protected override void OnUse () {
 		if (!enigmeResolu) {
 			for(int numTouche = 0; numTouche < listeToucheTrie.Length ; numTouche++){
 				Transform tranfTouche = listeToucheTrie[numTouche];
@@ -50,7 +30,7 @@ public class EnigmeClavierSaisiCode : EnigmeClavierAToucheAbstract {
 							tranfTouche.GetComponent<Renderer>().sharedMaterial = listMaterial[2];
 						}
 						numToucheActive = 0;
-						StartCoroutine("desactivatzAllTouche", numTouche);
+						StartCoroutine("desactivateAllTouche", numTouche);
 					}
 					tranfTouche.GetComponent<ToucheClavierCliquable>().setIsClickTraite(true);
 					break;
@@ -59,7 +39,7 @@ public class EnigmeClavierSaisiCode : EnigmeClavierAToucheAbstract {
 		}
 	}
 
-	private IEnumerator desactivatzAllTouche(int numMauvaiseTouche){
+	private IEnumerator desactivateAllTouche(int numMauvaiseTouche){
 		yield return  new WaitForSeconds (.5f);
 		for (int indexToucheValide = 0; indexToucheValide < listNumToucheValid.Length; indexToucheValide++) {
 			int numToucheValide = listNumToucheValid [indexToucheValide];

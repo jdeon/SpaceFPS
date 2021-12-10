@@ -19,12 +19,11 @@ public class CursorCustom : MonoBehaviour
 
     public static Collider findClickCollider()
     {
-        //TODO voir si on peut mieux faire
         RaycastHit hit;
         Vector3 coor = Mouse.current.position.ReadValue();
-        Camera gameCamera = Camera.current;
+        Camera gameCamera = Camera.main;
 
-        if (Physics.Raycast(gameCamera.ScreenPointToRay(coor), out hit))
+        if (null != gameCamera && Physics.Raycast(gameCamera.ScreenPointToRay(coor), out hit))
         {
             return hit.collider;
         }

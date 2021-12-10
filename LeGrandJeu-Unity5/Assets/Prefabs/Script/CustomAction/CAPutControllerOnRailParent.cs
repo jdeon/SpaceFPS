@@ -35,7 +35,7 @@ public class CAPutControllerOnRailParent : CustomActionScript
 	{
 		float timeAtStart = Time.time;
 		ContrainteController cc = GameObject.FindObjectOfType<ContrainteController>();
-		if(null == cc)
+		if(null == cc || !railParent.gameObject.activeInHierarchy)
         {
 			yield break;
         }
@@ -76,7 +76,7 @@ public class CAPutControllerOnRailParent : CustomActionScript
 			newRb.interpolation = rbData.interpolationMode;
 			newRb.collisionDetectionMode = rbData.collisionDetectionMode;
 
-			Rigidbody rbParent = controller.transform.parent.gameObject.GetComponent<Rigidbody>();
+			Rigidbody rbParent = controller.transform.parent.gameObject.GetComponentInParent<Rigidbody>();
 
 			if (null != rbParent)
             {
@@ -85,6 +85,7 @@ public class CAPutControllerOnRailParent : CustomActionScript
 		}
 
 		controller.transform.parent = null;
+		controller.transform.up = Vector3.up;
 
 		cc.canMove = true;
 		cc.canRotate = true;
