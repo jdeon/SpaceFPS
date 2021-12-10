@@ -43,6 +43,7 @@ public class CAPutControllerOnRailParent : CustomActionScript
 		GameObject controller = cc.gameObject;
 		controller.transform.parent = railParent;
 		controller.transform.localPosition = Vector3.zero;
+		controller.GetComponent<Collider>().isTrigger = true;
 
 		cc.canMove = false;
 
@@ -85,7 +86,9 @@ public class CAPutControllerOnRailParent : CustomActionScript
 		}
 
 		controller.transform.parent = null;
+		//TODO mieux faire ?
 		controller.transform.up = Vector3.up;
+		controller.GetComponent<Collider>().isTrigger = false;
 
 		cc.canMove = true;
 		cc.canRotate = true;
