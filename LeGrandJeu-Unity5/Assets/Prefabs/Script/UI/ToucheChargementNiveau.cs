@@ -1,11 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class ToucheChargementNiveau : MonoBehaviour {
 
+	public Button continueButton;
 	public List<Button> listButton;
 
 
@@ -25,6 +26,9 @@ public class ToucheChargementNiveau : MonoBehaviour {
 				listButton [index].transform.Find ("ImageActif").gameObject.SetActive (true);
 			}
 		}
+
+		EventSystem.current.SetSelectedGameObject(null);
+		continueButton.Select();
 	}
 
 	public void clickBouttonNiv(int numNiv) {
