@@ -131,7 +131,16 @@ public class GamePadCursor : MonoBehaviour
             }
         }
         else if (input.currentControlScheme == nameShemeGamePad && previousControleScheme != nameShemeGamePad) {
-            InputState.Change(virtualMouse.position, realMouse.position.ReadValue());
+            if (null == virtualMouse)
+            {
+                virtualMouse = (Mouse)InputSystem.AddDevice("VirtualMouse");
+            }
+            else if (!virtualMouse.added)
+            {
+                InputSystem.AddDevice(virtualMouse);
+            }
+                
+            InputState.Change(virtualMouse.position, realMouse.position.ReadValue());    
             anchorCursor(realMouse.position.ReadValue());
             gamepadMode = true;
         }
