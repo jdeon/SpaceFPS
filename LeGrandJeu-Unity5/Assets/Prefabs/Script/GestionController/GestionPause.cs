@@ -81,6 +81,7 @@ public class GestionPause : MonoBehaviour {
 	}
 
 	public void goToMenu(){
+		Time.timeScale = 1;
 		SceneManager.LoadScene ("MainMenu");
 	}
 
