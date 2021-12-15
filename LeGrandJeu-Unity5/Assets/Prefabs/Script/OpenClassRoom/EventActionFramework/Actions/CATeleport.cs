@@ -33,6 +33,11 @@ public class CATeleport : CustomActionScript {
 
 	public override IEnumerator DoActionOnEvent (MonoBehaviour sender, GameObject args)
 	{
+		if(null == _targetGameObject || null == _teleportTransform)
+        {
+			yield break;
+        }
+
 		if (!_immediate) {
 			yield return new WaitForFixedUpdate ();
 		}

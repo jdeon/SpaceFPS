@@ -9,14 +9,21 @@ public class Marteau : ObjetPortable {
 	private int indexAttack;
 
 	private Animator anim;
+	private bool enCours;
 
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
+		enCours = false;
 	}
 
 	void OnAttack()
     {
+        if (enCours)
+        {
+			return;
+        }
+
 		if(null != transform.parent && attackOrder.Length > 0 && Time.timeScale != 0){
 			if (transform.parent.name == "MainDroite" || transform.parent.name == "MainGauche")
 			{
@@ -51,6 +58,7 @@ public class Marteau : ObjetPortable {
 
 	IEnumerator desactivation(){
 		float timeTodesactivate = .5f;
+		enCours = true;
 
 		//Mini delta pour attendre le changement de state
 		while (timeTodesactivate > 0) {
@@ -63,6 +71,7 @@ public class Marteau : ObjetPortable {
 			yield return null;
 		}
 
+		enCours = false;
 		anim.enabled = false;
 	}
 

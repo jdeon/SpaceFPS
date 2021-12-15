@@ -35,7 +35,7 @@ public class CAPutControllerOnRailParent : CustomActionScript
 	{
 		float timeAtStart = Time.time;
 		ContrainteController cc = GameObject.FindObjectOfType<ContrainteController>();
-		if(null == cc || !railParent.gameObject.activeInHierarchy)
+		if(null == cc || null == railParent || !railParent.gameObject.activeInHierarchy)
         {
 			yield break;
         }

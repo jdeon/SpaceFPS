@@ -18,7 +18,6 @@ public class GamePadCursor : MonoBehaviour
 
     private bool previouMousState;
     private Mouse virtualMouse;
-    private Mouse realMouse;
 
     private string previousControleScheme;
     private string nameShemeGamePad;
@@ -40,8 +39,6 @@ public class GamePadCursor : MonoBehaviour
         cursorImage = gameObject.GetComponent<Image>();
         cursorRectTransform = gameObject.GetComponent<RectTransform>();
         canvasRectTransform = transform.parent.gameObject.GetComponent<RectTransform>();
-
-        realMouse = Mouse.current;
     }
 
     private void OnEnable()
@@ -125,12 +122,12 @@ public class GamePadCursor : MonoBehaviour
         if(input.currentControlScheme == nameShemeKeyBoard && previousControleScheme != nameShemeKeyBoard)
         {
             gamepadMode = false;
-            if (null != virtualMouse && virtualMouse.added)
+            if (null != virtualMouse && virtualMouse.added && null != Mouse.current)
             {
-                realMouse.WarpCursorPosition(virtualMouse.position.ReadValue());
+                Mouse.current.WarpCursorPosition(virtualMouse.position.ReadValue());
             }
         }
-        else if (input.currentControlScheme == nameShemeGamePad && previousControleScheme != nameShemeGamePad) {
+        else if (input.currentControlScheme == nameShemeGamePad && previousControleScheme != nameShemeGamePad && null != Mouse.current) {
             if (null == virtualMouse)
             {
                 virtualMouse = (Mouse)InputSystem.AddDevice("VirtualMouse");
@@ -140,8 +137,8 @@ public class GamePadCursor : MonoBehaviour
                 InputSystem.AddDevice(virtualMouse);
             }
                 
-            InputState.Change(virtualMouse.position, realMouse.position.ReadValue());    
-            anchorCursor(realMouse.position.ReadValue());
+            InputState.Change(virtualMouse.position, Mouse.current.position.ReadValue());    
+            anchorCursor(Mouse.current.position.ReadValue());
             gamepadMode = true;
         }
 
