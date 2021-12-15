@@ -6,9 +6,39 @@ public abstract class EnigmeClavierAToucheAbstract : EnigmeAbstract {
 
 	protected Transform[] listeToucheTrie;
 
+	private PlayerInputAction controller;
+	private bool triggerUse;
+
+
+	void Awake()
+	{
+		controller = new PlayerInputAction();
+		controller.PlayerActions.Use.performed += ctx => {
+			triggerUse = true;
+		};
+	}
+	private void LateUpdate()
+	{
+		if (triggerUse)
+		{
+			OnUse();
+			triggerUse = false;
+		}
+	}
+
+	private void OnEnable()
+	{
+		controller.Enable();
+	}
+
+	private void OnDisable()
+	{
+		controller.Disable();
+	}
+
 	// Use this for initialization
 	public virtual void Start () {
-		Cursor.visible = true;
+		CursorCustom.Activate = true;
 
 		listeToucheTrie = new Transform[transform.childCount];
 		List<Transform> listToucheATrier = new List<Transform>();
@@ -55,8 +85,10 @@ public abstract class EnigmeClavierAToucheAbstract : EnigmeAbstract {
 		}
 	}
 
+	protected abstract void OnUse();
+
 	protected void resolutionEnigme(){
-		Cursor.visible = false;
+		CursorCustom.Activate = false;
 		enigmeResolu = true;
 	}
 }

@@ -1,17 +1,36 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.InputSystem;
 
 public class ToucheClavierCliquable : MonoBehaviour {
 
 	private bool isClick = false;
 	private bool isClickTraite = true;
 
-	void OnMouseDown(){
-		isClick = true;
-		isClickTraite = false;
-	}
+    private PlayerInputAction controller;
+    void Awake()
+    {
+        controller = new PlayerInputAction();
+        controller.PlayerActions.Use.performed += ctx => {
+            Collider col = CursorCustom.findClickCollider();
+            if (null != col && this == col.gameObject.GetComponent<ToucheClavierCliquable>())
+            {
+                isClick = true;
+                isClickTraite = false;
+            }
+        };
+    }
 
-	public bool getIsClick(){
+    private void OnEnable()
+    {
+        controller.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controller.Disable();
+    }
+
+    public bool getIsClick(){
 		return this.isClick;
 	}
 

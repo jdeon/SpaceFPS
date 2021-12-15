@@ -1,11 +1,27 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.InputSystem;
 
 public class CEOnMouseDown : CustomEventScript {
-	
-	// Use this for initialization
-	void OnMouseDown(Collision col) {
-		
-		OnTriggered(this, col.gameObject);
-	}
+
+    private PlayerInputAction controller;
+    void Awake()
+    {
+        controller = new PlayerInputAction();
+        controller.PlayerActions.Use.performed += ctx => {
+            Collider col = CursorCustom.findClickCollider();
+            if(null != col) {
+                OnTriggered(this, col.gameObject);
+            }
+        };
+    }
+
+    private void OnEnable()
+    {
+        controller.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controller.Disable();
+    }
 }

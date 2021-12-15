@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.InputSystem;
 
 public class MoveScript : MonoBehaviour {
 
@@ -40,14 +40,20 @@ public class MoveScript : MonoBehaviour {
 	private float timeBeforeNewClip;
 	private float mouvementDemander;	//Temps entre le relachment de la touche et la fin des bruit de pas
 	private JumpScript _jumpScript;
+	private ContrainteController _contrainteController;
 
 	private GameObject stepRayLower;
 	private GameObject stepRayUpper;
+
+	private Vector2 inputDirection;
 
 	void Start () {
 		if (_rigidbody == null) {
 			_rigidbody = this.GetComponent<Rigidbody> ();
 		}
+
+		_contrainteController = GetComponent<ContrainteController>();
+
 		_audioSource = GetComponent<AudioSource> ();
 		timeBeforeNewClip = 2f;
 		mouvementDemander = 2.5f;
@@ -67,12 +73,22 @@ public class MoveScript : MonoBehaviour {
 		stepRayUpper = new GameObject("stepRayUpper");
 		stepRayUpper.transform.SetParent(_transform);
 		stepRayUpper.transform.localPosition = new Vector3(0, stepOff, capsuleCollider.radius * 0.9f);
+
+		inputDirection = Vector2.zero;
 	}
 
 	void FixedUpdate () {
+		if (null == _rigidbody)
+		{
+			_rigidbody = GetComponent<Rigidbody>();
+		}
 
-		var direction = (_transform.forward * Input.GetAxis("Vertical") + _transform.right * Input.GetAxis("Horizontal")).normalized;
-		direction = direction.normalized;
+		if (null == _rigidbody)
+        {
+			//Cas de certain mode cinématique
+			return;
+        }
+		Vector3 direction = (_transform.right * inputDirection.x + _transform.forward * inputDirection.y).normalized;
 
 		//Pente max egal a 30°
 		direction = analyseSteepSlope(direction);
@@ -80,6 +96,18 @@ public class MoveScript : MonoBehaviour {
 		applyMovements(direction, this.isSlopeTooSteep);
 
 		stepClimbing(direction);
+	}
+
+	void OnMovement(InputValue inputValue)
+    {
+		if (null != _contrainteController && !_contrainteController.canMove)
+		{
+			inputDirection = Vector2.zero;
+		} else
+        {
+			inputDirection = inputValue.Get<Vector2>();
+		}
+		
 	}
 
 	private Vector3 analyseSteepSlope(Vector3 direction){

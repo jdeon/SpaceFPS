@@ -10,8 +10,7 @@ public class EnigmeClavierToucheBinaire : EnigmeClavierAToucheAbstract {
 	public Material[] listMaterial;
 	
 	private Transform[,] tableauDeTouche;
-	
-	
+
 	// Use this for initialization
 	public override void Start () {
 		base.Start();
@@ -36,16 +35,16 @@ public class EnigmeClavierToucheBinaire : EnigmeClavierAToucheAbstract {
 
 		initBoutonActif();
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-		if (Input.GetMouseButtonUp (0) && !enigmeResolu) {
+	protected override void OnUse() {
+		if (!enigmeResolu) {
 			for (int numLigne = 0; numLigne < this.nbLigne; numLigne++) {
 				for (int numColonne = 0; numColonne < this.nbColonne; numColonne++) {
 					Transform tranfTouche = this.tableauDeTouche [numLigne,numColonne];
 					ToucheClavierCliquable scriptTouche = tranfTouche.GetComponent<ToucheClavierCliquable> ();
 					if (null != tranfTouche && null != scriptTouche && !scriptTouche.getIsClickTraite ()) {
-						Cursor.visible = true;
+						CursorCustom.Activate = true;
 
 						Transform[] tabCase = new Transform[5];
 						tabCase[0] = tranfTouche;

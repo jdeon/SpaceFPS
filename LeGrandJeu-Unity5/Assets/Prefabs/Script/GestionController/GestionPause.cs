@@ -1,16 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GestionPause : MonoBehaviour {
 
 	public GameObject goEcran;
+	public Button defaultButon;
 
 	private bool inPause;
 	private bool changeEtat;
 
-	// Use this for initialization
+	private Transform cursor;
+
+	private PlayerInputAction controller;
+	void Awake()
+	{
+		controller = new PlayerInputAction();
+		controller.PlayerActions.Cancel.performed += ctx => {
+			OnCancel();
+		};
+
+		cursor = transform.Find("Cursor");
+	}
+
+	private void OnEnable()
+	{
+		controller.Enable();
+	}
+
+	private void OnDisable()
+	{
+		controller.Disable();
+	}
+
 	void Start () {
 		inPause = false;
 		changeEtat = false;
@@ -30,28 +53,48 @@ public class GestionPause : MonoBehaviour {
 
 			if (inPause) {
 				goEcran.SetActive (inPause);
-				Cursor.visible = true;
+				CursorCustom.Activate = true;
 				Time.timeScale = 0;
+				if(null != defaultButon)
+                {
+					EventSystem.current.SetSelectedGameObject(null);
+					defaultButon.Select();
+				}
 			} else {
 				goEcran.SetActive (inPause);
-				Cursor.visible = false;
+				CursorCustom.Activate = false;
 				Time.timeScale = 1;
 			}
 
 			changeEtat = false;
 		}
+	}
 
-		if (Input.GetKeyDown (KeyCode.Escape)) {
-			resumeGame ();
-		}
+    void OnCancel()
+    {
+		resumeGame();
 	}
 
 	public void resumeGame(){
 		inPause = !inPause;
 		changeEtat = true;
 	}
+	public void lastCheckpoint()
+	{
+		GestionCheckpoint gestionCheckpoint = GameObject.FindObjectOfType<GestionCheckpoint>();
+
+		if(null != gestionCheckpoint)
+        {
+			gestionCheckpoint.respawnCheckPoint();
+
+		}
+
+		inPause = !inPause;
+		changeEtat = true;
+	}
 
 	public void goToMenu(){
+		Time.timeScale = 1;
 		SceneManager.LoadScene ("MainMenu");
 	}
 

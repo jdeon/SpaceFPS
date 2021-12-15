@@ -11,14 +11,8 @@ public class EnigmeClavierSaisiCode : EnigmeClavierAToucheAbstract {
 
 	private int numToucheActive = 0;
 
-
-	// Use this for initialization
-	/*void Start () {
-	}*/
-	
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetMouseButtonUp (0) && !enigmeResolu) {
+	protected override void OnUse () {
+		if (!enigmeResolu) {
 			for(int numTouche = 0; numTouche < listeToucheTrie.Length ; numTouche++){
 				Transform tranfTouche = listeToucheTrie[numTouche];
 				if(null != tranfTouche && null != tranfTouche.GetComponent<ToucheClavierCliquable>() && !tranfTouche.GetComponent<ToucheClavierCliquable>().getIsClickTraite()){
@@ -29,14 +23,14 @@ public class EnigmeClavierSaisiCode : EnigmeClavierAToucheAbstract {
 						numToucheActive++;
 						if(numToucheActive == listNumToucheValid.Length){
 							enigmeResolu = true;
-							Cursor.visible = false;
+							CursorCustom.Activate = false;
 						}
 					} else {
 						if(listMaterial.Length >=3){
 							tranfTouche.GetComponent<Renderer>().sharedMaterial = listMaterial[2];
 						}
 						numToucheActive = 0;
-						StartCoroutine("desactivatzAllTouche", numTouche);
+						StartCoroutine("desactivateAllTouche", numTouche);
 					}
 					tranfTouche.GetComponent<ToucheClavierCliquable>().setIsClickTraite(true);
 					break;
@@ -45,7 +39,7 @@ public class EnigmeClavierSaisiCode : EnigmeClavierAToucheAbstract {
 		}
 	}
 
-	private IEnumerator desactivatzAllTouche(int numMauvaiseTouche){
+	private IEnumerator desactivateAllTouche(int numMauvaiseTouche){
 		yield return  new WaitForSeconds (.5f);
 		for (int indexToucheValide = 0; indexToucheValide < listNumToucheValid.Length; indexToucheValide++) {
 			int numToucheValide = listNumToucheValid [indexToucheValide];

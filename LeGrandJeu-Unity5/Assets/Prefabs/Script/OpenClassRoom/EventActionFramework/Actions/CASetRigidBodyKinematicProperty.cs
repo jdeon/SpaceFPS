@@ -17,6 +17,11 @@ public class CASetRigidBodyKinematicProperty : CustomActionScript {
 
 	public override IEnumerator DoActionOnEvent (MonoBehaviour sender, GameObject args)
 	{
+		if(null == _targetRigidbody)
+        {
+			yield break;
+        }
+
 		yield return new WaitForFixedUpdate();
 		_targetRigidbody.isKinematic = _changeToKinematic;
 		if (!_changeToKinematic)
