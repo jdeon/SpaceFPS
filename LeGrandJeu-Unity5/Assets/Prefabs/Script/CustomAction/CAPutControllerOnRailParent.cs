@@ -85,9 +85,17 @@ public class CAPutControllerOnRailParent : CustomActionScript
 			}
 		}
 
+		Transform head = controller.transform.Find("HeadController");
+		Vector3 headLookVector = new Vector3(head.forward.x, head.forward.y, head.forward.z);
+
 		controller.transform.parent = null;
-		//TODO mieux faire ?
 		controller.transform.up = Vector3.up;
+		controller.transform.forward = Vector3.ProjectOnPlane(headLookVector, controller.transform.up).normalized;
+
+		head.transform.localRotation = Quaternion.identity;
+		head.transform.forward = Vector3.ProjectOnPlane(headLookVector, head.transform.right).normalized;
+
+
 		controller.GetComponent<Collider>().isTrigger = false;
 
 		cc.canMove = true;
