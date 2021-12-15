@@ -79,6 +79,19 @@ public class GestionPause : MonoBehaviour {
 		inPause = !inPause;
 		changeEtat = true;
 	}
+	public void lastCheckpoint()
+	{
+		GestionCheckpoint gestionCheckpoint = GameObject.FindObjectOfType<GestionCheckpoint>();
+
+		if(null != gestionCheckpoint)
+        {
+			gestionCheckpoint.respawnCheckPoint();
+
+		}
+
+		inPause = !inPause;
+		changeEtat = true;
+	}
 
 	public void goToMenu(){
 		Time.timeScale = 1;
