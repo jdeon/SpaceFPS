@@ -28,7 +28,7 @@ public class DeplacerAutourWithRigidB : MonoBehaviour {
 		objectRignidB.isKinematic = true;
 		Vector3 positionEnLocal = centre.InverseTransformPoint (transform.position);
 		if (coefOval.x != 0 && coefOval.y != 0) {
-			rayon = positionEnLocal.x / coefOval.x + positionEnLocal.z / coefOval.y;
+			rayon = Mathf.Abs(positionEnLocal.x / coefOval.x + positionEnLocal.z / coefOval.y);
 			angle = Mathf.Acos(positionEnLocal.x/(new Vector2 (positionEnLocal.x,positionEnLocal.z).magnitude)) * Mathf.Rad2Deg;
 		} else {
 			this.actif = false;
@@ -51,6 +51,11 @@ public class DeplacerAutourWithRigidB : MonoBehaviour {
 			}
 
 			angle += degreeParSec * Time.deltaTime;
+
+			if(angle > 360)
+            {
+				angle -= 360;
+            }
 		}
 	}
 
