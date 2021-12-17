@@ -71,6 +71,12 @@ public class GestionCheckpoint : MonoBehaviour {
 	 * Cette méthode est appelé quand le controler tombe à travers une zone de respawn
 	 * */
 	public void respawnCheckPoint(){
+		if(null == this.checkPointActuel)
+        {
+			this.checkPointActuel = objGroupCheckpoint.GetComponentInChildren<CheckPoint>();
+		}
+
+
 		Transform transScripDeRespawn = this.checkPointActuel.transform.Find ("checkPointWhenRespawn");
 		StartCoroutine (lancerScriptCheckpoint(transScripDeRespawn, 0f));
 		teleportController (this.checkPointActuel);
