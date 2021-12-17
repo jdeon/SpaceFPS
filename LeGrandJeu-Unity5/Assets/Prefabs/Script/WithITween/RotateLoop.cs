@@ -7,7 +7,7 @@ public class RotateLoop : RotateAbstract
 	public float AngleYEnFraction;
 	public float AngleZEnFraction;
 
-	void Start(){
+	new void Start(){
 		//FIXME supprimer itween
 		//iTween.RotateBy(gameObject, iTween.Hash("x", AngleXEnFraction,"y",AngleYEnFraction, "z", AngleZEnFraction, "easeType", "easeInOutBack", "loopType", "loop", "delay", Delay, "time", time));
 		Debug.Log(gameObject.name + "utilise RotateLoop");

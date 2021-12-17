@@ -9,7 +9,7 @@ public class RotatePingPong : RotateAbstract
 
 	private bool isRetour;
 
-	void Start(){
+	new void Start(){
 		//FIXME supprimer itween
 		//iTween.RotateBy(gameObject, iTween.Hash("x", AngleXEnFraction,"y",AngleYEnFraction, "z", AngleZEnFraction, "easeType", "easeInOutBack", "loopType", "pingPong", "delay", Delay, "time", time));
 		Debug.Log(gameObject.name + "utilise RotatePingPong");

@@ -9,24 +9,24 @@ public class CEOnEnterConeCast : CustomEventScript
     public float angleCone;
 
     private List<GameObject> goInZone;
-    private SphereCollider collider;
+    private SphereCollider detectCollider;
 
     private void Start()
     {
         goInZone = new List<GameObject>();
-        collider = gameObject.AddComponent<SphereCollider>();
-        collider.radius = distanceMax;
+        detectCollider = gameObject.AddComponent<SphereCollider>();
+        detectCollider.radius = distanceMax;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        goInZone.Add(collider.gameObject);
+        goInZone.Add(other.gameObject);
 
     }
 
     private void OnTriggerExit(Collider other)
     {
-        goInZone.Remove(collider.gameObject);
+        goInZone.Remove(other.gameObject);
     }
 
     // Use this for initialization

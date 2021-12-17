@@ -12,7 +12,7 @@ public class CEOnSecondAfterStart : CustomEventScript {
 	}
 
 	public IEnumerator startEvent (){
-		if(null != secondToWait){
+		if(secondToWait > 0){
 			yield return new WaitForSeconds(secondToWait);
 		}
 		OnTriggered (this, this.gameObject);

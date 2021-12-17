@@ -10,14 +10,14 @@ public class TeleportEnemy : MonoBehaviour
 
     //Cette ennemie n'affecte que le controller
     private List<GestionCheckpoint> controllerInZone;
-    private SphereCollider collider;
+    private SphereCollider detectCollider;
 
     private void Start()
     {
         controllerInZone = new List<GestionCheckpoint>();
-        collider = gameObject.AddComponent<SphereCollider>();
-        collider.radius = distanceMax;
-        collider.isTrigger = true;
+        detectCollider = gameObject.AddComponent<SphereCollider>();
+        detectCollider.radius = distanceMax;
+        detectCollider.isTrigger = true;
     }
 
     private void OnTriggerEnter(Collider other)
