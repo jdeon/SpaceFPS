@@ -11,15 +11,17 @@
                     "id": "1f6b25e7-e63d-427a-85d2-46ae52cfe27a",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "CameraView",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "11b7e54d-765d-484e-9429-4a86cbc65048",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Jump",
@@ -27,7 +29,8 @@
                     "id": "9aa73899-c8c5-4e79-a9d9-93667aede71f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Attack",
@@ -35,7 +38,8 @@
                     "id": "ac56a378-e142-4494-884f-7cebf6258000",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Use",
@@ -43,7 +47,8 @@
                     "id": "68329c63-84df-4846-bf42-287ad5186235",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Aim",
@@ -51,7 +56,8 @@
                     "id": "4f384914-70f6-4383-804d-1b5bd602dbb8",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Cancel",
@@ -59,7 +65,8 @@
                     "id": "47ef9a45-d197-4185-a296-0a5628d66570",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Point",
@@ -67,7 +74,8 @@
                     "id": "383c9f1d-5d6f-4289-9d05-2b339485773f",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -391,7 +399,8 @@
                     "id": "3c51e6c6-bcf5-4f5f-91fe-268ff8589d7d",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Navigation",
@@ -399,7 +408,8 @@
                     "id": "5993707a-9b05-4495-8fcf-b79e288bc8f5",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Click",
@@ -407,7 +417,8 @@
                     "id": "1f1a2d23-af8f-49b9-9645-facc83f6eb44",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Cancel",
@@ -415,7 +426,8 @@
                     "id": "92700949-10cd-4bed-8f87-40add01549a4",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Point",
@@ -423,7 +435,8 @@
                     "id": "b4bf7e5c-69eb-4492-b14d-7d4dba803ad1",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Submit",
@@ -431,7 +444,8 @@
                     "id": "9afd91a2-a6a2-4c86-b928-22bdc8dbe27d",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
