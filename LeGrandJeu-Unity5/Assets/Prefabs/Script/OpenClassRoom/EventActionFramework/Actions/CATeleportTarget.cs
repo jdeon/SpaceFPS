@@ -25,6 +25,11 @@ public class CATeleportTarget : CustomActionScript {
 	{
 		Vector3 forceSortie = Vector3.zero;
 
+		if(null == _teleportTransform || null == args)
+        {
+			yield break;
+        }
+
 		if (!_immediate)
 			yield return new WaitForFixedUpdate();
 		args.transform.position = _teleportTransform.position;

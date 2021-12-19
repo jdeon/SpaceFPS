@@ -12,6 +12,11 @@ public class CAModifyRotationConstraint : CustomActionScript {
 
 	public override IEnumerator DoActionOnEvent (MonoBehaviour sender, GameObject args)	{
 
+		if(null == rigidTarget)
+        {
+			yield break;
+        }
+
 		if (rotX) {
 			rigidTarget.constraints = rigidTarget.constraints | RigidbodyConstraints.FreezeRotationX;
 		} else {
