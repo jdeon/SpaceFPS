@@ -68,7 +68,7 @@ public class MoveScript : MonoBehaviour {
 
 		stepRayLower = new GameObject("stepRayLower");
 		stepRayLower.transform.SetParent(_transform);
-		stepRayLower.transform.localPosition = new Vector3(0, 0, capsuleCollider.radius * 0.9f);
+		stepRayLower.transform.localPosition = new Vector3(0, .05f, capsuleCollider.radius * 0.9f);
 
 		stepRayUpper = new GameObject("stepRayUpper");
 		stepRayUpper.transform.SetParent(_transform);
@@ -240,7 +240,7 @@ public class MoveScript : MonoBehaviour {
 		if (Physics.Raycast(stepRayLower.transform.position, direction, out hitLower, 0.1f))
 		{
 			RaycastHit hitUpper;
-			if (!Physics.Raycast(stepRayUpper.transform.position, direction, out hitUpper, 0.2f))
+			if (!hitLower.collider.Equals(_jumpScript.getGround()) && !Physics.Raycast(stepRayUpper.transform.position, direction, out hitUpper, 0.2f))
 			{
 				_rigidbody.position -= transform.up * -_stepSmooth;
 				isStepClimbing = true;
@@ -250,7 +250,7 @@ public class MoveScript : MonoBehaviour {
 		{
 
 			RaycastHit hitUpper45;
-			if (!Physics.Raycast(stepRayUpper.transform.position, direction45, out hitUpper45, 0.2f))
+			if (!hitLower.collider.Equals(_jumpScript.getGround()) && !Physics.Raycast(stepRayUpper.transform.position, direction45, out hitUpper45, 0.2f))
 			{
 				_rigidbody.position -= transform.up * -_stepSmooth;
 				isStepClimbing = true;
@@ -260,7 +260,7 @@ public class MoveScript : MonoBehaviour {
 		{
 
 			RaycastHit hitUpperMinus45;
-			if (!Physics.Raycast(stepRayUpper.transform.position, directionMinus45, out hitUpperMinus45, 0.2f))
+			if (!hitLower.collider.Equals(_jumpScript.getGround()) &&  !Physics.Raycast(stepRayUpper.transform.position, directionMinus45, out hitUpperMinus45, 0.2f))
 			{
 				_rigidbody.position -= transform.up * -_stepSmooth;
 				isStepClimbing = true;
