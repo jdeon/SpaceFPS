@@ -27,6 +27,7 @@ public class JumpScript : MonoBehaviour {
 	private bool _canJump = true;
 	private float _waitToJump = 0f;
 	private Collider _ground;
+	private Vector3 _groundNormal;
 
 	private AudioSource _audioSource;
 
@@ -71,9 +72,27 @@ public class JumpScript : MonoBehaviour {
 			_rigidbody = GetComponent<Rigidbody>();
 		}
 
-		if (null != _rigidbody && _canJump && !_moveScript.isSlopeTooSteep && (isInGround() || _moveScript.isStepClimbing))
+		if (null != _rigidbody && _canJump)
 		{
-			_rigidbody.AddForce(_transform.up * _jumpSpeed, ForceMode.VelocityChange);
+			Vector3 jumpDirection = Vector3.zero;
+
+			if(!_groundNormal.Equals(Vector3.zero) && isInGround())
+            {
+				//Direction moyenne transform up et normal)
+				jumpDirection = (_groundNormal + _transform.up).normalized;
+
+			}
+			else if (_moveScript.isStepClimbing)
+            {
+				jumpDirection = _transform.up;
+			}
+
+            if (jumpDirection.Equals(Vector3.zero))
+            {
+				return;
+            }
+
+			_rigidbody.AddForce(jumpDirection * _jumpSpeed, ForceMode.VelocityChange);
 			if (_jumpSound != null)
 			{
 				_audioSource.clip = _jumpSound;
@@ -87,8 +106,10 @@ public class JumpScript : MonoBehaviour {
 	private void processInGround(){
 		if (Physics.SphereCast (_transform.position + _transform.up * _feetRadius * 1.05f, _feetRadius, _transform.up * -1f, out _hit, 0.1f) && !_hit.collider.isTrigger) {
 			this._ground = _hit.collider;
+			this._groundNormal = _hit.normal;
 		} else {
 			this._ground = null;
+			this._groundNormal = Vector3.zero;
 		}
 	}
 
