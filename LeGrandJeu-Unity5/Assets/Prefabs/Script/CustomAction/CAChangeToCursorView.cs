@@ -12,6 +12,9 @@ public class CAChangeToCursorView : CustomActionScript
 	[SerializeField]
 	private EnigmeAbstract enigmeOptionnel;
 
+	[SerializeField]
+	private bool activatePointer = true;
+
 	private Vector3 originPosition;
 	private Quaternion originRotation;
 
@@ -54,6 +57,12 @@ public class CAChangeToCursorView : CustomActionScript
 		cc.canMove = false;
 		cc.canRotate = false;
 
+		Collider collider = controller.GetComponent<Collider>();
+		if(null != collider)
+        {
+			collider.enabled = false;
+        }
+
 		Rigidbody rb = controller.GetComponent<Rigidbody>();
 
 		if(null != rb)
@@ -76,7 +85,9 @@ public class CAChangeToCursorView : CustomActionScript
 		controller.transform.localRotation = Quaternion.identity;
 		head.transform.localRotation =  Quaternion.identity;
 
-		CursorCustom.Activate = true;
+        if (activatePointer) { 
+			CursorCustom.Activate = true;
+		}
 
 		yield return null;
 	}
@@ -111,8 +122,13 @@ public class CAChangeToCursorView : CustomActionScript
 		originPosition = Vector3.zero;
 		controller.transform.parent = null;
 
-		Rigidbody rb = controller.GetComponent<Rigidbody>();
+		Collider collider = controller.GetComponent<Collider>();
+		if (null != collider)
+		{
+			collider.enabled = true;
+		}
 
+		Rigidbody rb = controller.GetComponent<Rigidbody>();
 		if (null != rb)
 		{
 			rb.isKinematic = false;

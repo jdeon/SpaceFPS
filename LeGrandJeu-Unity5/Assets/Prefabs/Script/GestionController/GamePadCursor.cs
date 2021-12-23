@@ -14,7 +14,7 @@ public class GamePadCursor : MonoBehaviour
     private RectTransform cursorRectTransform;
     private RectTransform canvasRectTransform;
     private Image cursorImage;
-    private float cursorSpeed = 20f;
+    private float cursorSpeed = 10f;
 
     private bool previouMousState;
     private Mouse virtualMouse;

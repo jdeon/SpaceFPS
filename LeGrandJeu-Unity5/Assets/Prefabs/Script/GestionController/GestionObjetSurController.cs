@@ -12,7 +12,8 @@ public class GestionObjetSurController : MonoBehaviour {
 	private bool isModeVisee;
 	private bool transfertEnCours;
 
-	
+	private enum ErrorDepot { Aucun, MainVide, PasDeposable, PasBonType}
+	private string errorMessage;
 
 	// Use this for initialization
 	void Start () {
@@ -68,12 +69,15 @@ public class GestionObjetSurController : MonoBehaviour {
 		{
 			string[] listTypeDetection = other.gameObject.name.Split('_');			//[0] sera toujours "detecteur" 
 			bool objetTrouve = false;
+			ErrorDepot errorDepotG = ErrorDepot.MainVide;
+			ErrorDepot errorDepotD = ErrorDepot.MainVide;
 
 			if (!objetTrouve && controllerTransform.Find (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_GAUCHE) != null && controllerTransform.Find (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_GAUCHE).childCount != 0 ) {
 				Transform conteneurMainG = controllerTransform.Find (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_GAUCHE);
 				for (int numChild = 0 ; numChild < conteneurMainG.childCount ; numChild++){
 					ObjetPortable objetPortable  = (ObjetPortable)conteneurMainG.GetChild(numChild).GetComponent<ObjetPortable> ();
-					if (null != objetPortable && objetPortable.isDeposable() && objetPortable.isSameTypeObjectDetector(listTypeDetection)){
+					errorDepotG = processErrorDepot(objetPortable, listTypeDetection);
+					if (ErrorDepot.Aucun.Equals(errorDepotG)){
 						objetTransform = conteneurMainG.GetChild(numChild).transform;
 						objetTrouve = true;
 						break;
@@ -85,7 +89,9 @@ public class GestionObjetSurController : MonoBehaviour {
 				Transform conteneurMainD = controllerTransform.Find (Constantes.STR_OBJET_A_PORTER+"/"+ Constantes.STR_MAIN_DROITE);
 				for (int numChild = 0 ; numChild < conteneurMainD.childCount ; numChild++){
 					ObjetPortable objetPortable  = (ObjetPortable)conteneurMainD.GetChild(numChild).GetComponent<ObjetPortable> ();
-					if (null != objetPortable && objetPortable.isDeposable() && objetPortable.isSameTypeObjectDetector(listTypeDetection)){
+					errorDepotD = processErrorDepot(objetPortable, listTypeDetection);
+					if (ErrorDepot.Aucun.Equals(errorDepotD))
+					{
 						objetTransform = conteneurMainD.GetChild(numChild).transform;
 						objetTrouve = true;
 						break;
@@ -93,10 +99,43 @@ public class GestionObjetSurController : MonoBehaviour {
 				}
 			}
 
+			ErrorDepot errorDepot = (int)errorDepotG > (int)errorDepotD ? errorDepotG : errorDepotD;
+
 			if (objetTransform != null){
 				StartCoroutine (deposerObjet(other.gameObject.transform, objetTransform, other.gameObject.transform.parent));
+			} else if (ErrorDepot.MainVide.Equals(errorDepot))
+            {
+				StartCoroutine(ShowMessage("Aucun objet à déposer", 2));
+            } else if (ErrorDepot.PasDeposable.Equals(errorDepot))
+			{
+				StartCoroutine(ShowMessage("Objet non actif", 2));
 			}
+			else if (ErrorDepot.PasBonType.Equals(errorDepot))
+			{
+				StartCoroutine(ShowMessage("Pas le bonne endroit", 2));
+			} 
 		}
+	}
+
+	private ErrorDepot processErrorDepot(ObjetPortable objetPortable, string[] listTypeDetection)
+    {
+		ErrorDepot errorDepot;
+
+		if(null == objetPortable)
+        {
+			errorDepot = ErrorDepot.MainVide;
+		} else if (!objetPortable.isDeposable())
+        {
+			errorDepot = ErrorDepot.PasDeposable;
+        } else if (!objetPortable.isSameTypeObjectDetector(listTypeDetection))
+        {
+			errorDepot = ErrorDepot.PasBonType;
+		} else
+        {
+			errorDepot = ErrorDepot.Aucun;
+        }
+
+		return errorDepot;
 	}
 
 	/**Si il y a de la place dans une mains et que l'objet possède le script ObjetPortable, on le déplace depuis sa position vers la mains de destination
@@ -184,17 +223,21 @@ public class GestionObjetSurController : MonoBehaviour {
 		}
 	}
 
-
-
-
-
 	/**Affiche le message en parametre durant le temps en parametre
 	 * */
 	IEnumerator ShowMessage (string message, float delay) {
-		Text text = GetComponent<Text>();
-		text.text = message;
-		text.enabled = true;
+		errorMessage = message;
 		yield return new WaitForSeconds(delay);
-		text.enabled = false;
-	}	
+		errorMessage = null;
+	}
+
+	public void OnGUI()
+	{
+		if (null != errorMessage && errorMessage != "")
+		{
+			Rect rect = new Rect(Screen.width * (1f - .1f) / 2f, Screen.height * (1f - .05f) / 2f, Screen.width * .1f, Screen.height * .05f);
+			GUI.skin.textArea.fontSize = Mathf.RoundToInt(Screen.width / 100f);
+			GUI.TextArea(rect, errorMessage);
+		}
+	}
 }
